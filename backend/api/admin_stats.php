@@ -1,6 +1,6 @@
-<?php
+﻿<?php
 // ============================================
-// MUSICSTORE - API Admin Stats
+// MUSICSTORE - API de Indicadores Admin
 // ============================================
 
 require_once __DIR__ . '/../middleware/auth.php';
@@ -43,3 +43,4 @@ jsonResponse([
     'top_products'   => $topProducts,
     'orders_by_status' => $ordersByStatus,
 ]);
+

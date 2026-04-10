@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 // ============================================
 // MUSICSTORE - API de Pedidos
 // ============================================
@@ -17,7 +17,7 @@ match (true) {
     $method === 'GET'  && $id  => getOrder($id, $userId, $isAdmin),
     $method === 'POST'          => createOrder($userId),
     $method === 'PUT'  && $id  => updateOrderStatus($id),
-    default => jsonResponse(['error' => 'Rota não encontrada'], 404)
+    default => jsonResponse(['error' => 'Rota nÃ£o encontrada'], 404)
 };
 
 function listOrders(int $userId, bool $isAdmin): void {
@@ -56,7 +56,7 @@ function getOrder(int $id, int $userId, bool $isAdmin): void {
                           WHERE o.id = ?");
     $stmt->execute([$id]);
     $order = $stmt->fetch();
-    if (!$order) jsonResponse(['error' => 'Pedido não encontrado.'], 404);
+    if (!$order) jsonResponse(['error' => 'Pedido nÃ£o encontrado.'], 404);
     if (!$isAdmin && (int)$order['user_id'] !== $userId) {
         jsonResponse(['error' => 'Acesso negado.'], 403);
     }
@@ -83,11 +83,11 @@ function createOrder(int $userId): void {
     $address = trim($body['shipping_address'] ?? '');
     $notes   = trim($body['notes'] ?? '');
 
-    if (!$address) jsonResponse(['error' => 'Endereço de entrega é obrigatório.'], 400);
+    if (!$address) jsonResponse(['error' => 'EndereÃ§o de entrega Ã© obrigatÃ³rio.'], 400);
 
     $db = getDB();
 
-    // Buscar carrinho
+    // Busca os itens no carrinho do cliente
     $stmt = $db->prepare("SELECT ci.quantity, p.id as product_id, p.price, p.stock, p.name
                           FROM cart_items ci JOIN products p ON ci.product_id = p.id
                           WHERE ci.user_id = ? AND p.active = 1");
@@ -96,7 +96,7 @@ function createOrder(int $userId): void {
 
     if (!$cartItems) jsonResponse(['error' => 'Carrinho vazio.'], 400);
 
-    // Verificar estoque
+    // Confere se ainda ha estoque suficiente
     foreach ($cartItems as $item) {
         if ($item['stock'] < $item['quantity']) {
             jsonResponse(['error' => "Estoque insuficiente para: {$item['name']}"], 400);
@@ -107,12 +107,12 @@ function createOrder(int $userId): void {
 
     $db->beginTransaction();
     try {
-        // Criar pedido
+        // Cria o pedido principal
         $stmt = $db->prepare("INSERT INTO orders (user_id, total, shipping_address, notes) VALUES (?, ?, ?, ?)");
         $stmt->execute([$userId, $total, $address, $notes]);
         $orderId = (int)$db->lastInsertId();
 
-        // Inserir itens e diminuir estoque
+        // Salva os itens e atualiza o estoque
         foreach ($cartItems as $item) {
             $stmt = $db->prepare("INSERT INTO order_items (order_id, product_id, quantity, price) VALUES (?, ?, ?, ?)");
             $stmt->execute([$orderId, $item['product_id'], $item['quantity'], $item['price']]);
@@ -121,7 +121,7 @@ function createOrder(int $userId): void {
             $stmt->execute([$item['quantity'], $item['product_id']]);
         }
 
-        // Limpar carrinho
+        // Limpa o carrinho apos finalizar o pedido
         $stmt = $db->prepare('DELETE FROM cart_items WHERE user_id = ?');
         $stmt->execute([$userId]);
 
@@ -139,11 +139,12 @@ function updateOrderStatus(int $id): void {
     $status = $body['status'] ?? '';
     $allowed = ['pending','processing','shipped','delivered','cancelled'];
     if (!in_array($status, $allowed)) {
-        jsonResponse(['error' => 'Status inválido.'], 400);
+        jsonResponse(['error' => 'Status invÃ¡lido.'], 400);
     }
     $db   = getDB();
     $stmt = $db->prepare('UPDATE orders SET status = ? WHERE id = ?');
     $stmt->execute([$status, $id]);
-    if ($stmt->rowCount() === 0) jsonResponse(['error' => 'Pedido não encontrado.'], 404);
+    if ($stmt->rowCount() === 0) jsonResponse(['error' => 'Pedido nÃ£o encontrado.'], 404);
     jsonResponse(['message' => 'Status atualizado com sucesso.']);
 }
+
