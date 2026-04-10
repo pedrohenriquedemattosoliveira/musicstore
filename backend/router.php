@@ -26,27 +26,44 @@ if ($uri === '/health') {
     exit;
 }
 
+// Resposta básica na raiz para facilitar testes no Railway.
+if ($uri === '/' || $uri === '') {
+    header('Content-Type: application/json');
+    echo json_encode([
+        'name' => 'MusicStore API',
+        'status' => 'ok',
+        'endpoints' => [
+            '/health',
+            '/api/categories.php',
+            '/api/products.php',
+            '/api/auth.php?action=login',
+        ],
+    ]);
+    exit;
+}
+
 // Servir arquivos estáticos que existam (ex.: favicon)
 if ($uri !== '/' && file_exists($base . $uri) && !is_dir($base . $uri)) {
     return false;
 }
 
-// Roteamento da API
-$map = [
-    '/api/auth.php'        => $base . '/api/auth.php',
-    '/api/products.php'    => $base . '/api/products.php',
-    '/api/cart.php'        => $base . '/api/cart.php',
-    '/api/orders.php'      => $base . '/api/orders.php',
-    '/api/categories.php'  => $base . '/api/categories.php',
-    '/api/admin_stats.php' => $base . '/api/admin_stats.php',
+// Roteamento da API - aceita múltiplos formatos de URL.
+$routeMap = [
+    'auth.php'        => $base . '/api/auth.php',
+    'products.php'    => $base . '/api/products.php',
+    'cart.php'        => $base . '/api/cart.php',
+    'orders.php'      => $base . '/api/orders.php',
+    'categories.php'  => $base . '/api/categories.php',
+    'admin_stats.php' => $base . '/api/admin_stats.php',
 ];
 
-// Match por prefixo para suportar query string
-foreach ($map as $prefix => $file) {
-    if (str_starts_with($uri, $prefix)) {
-        require $file;
-        exit;
-    }
+$normalizedUri = preg_replace('#^/backend#', '', $uri);
+$normalizedUri = preg_replace('#^/api/#', '', $normalizedUri);
+$normalizedUri = ltrim($normalizedUri, '/');
+
+if (isset($routeMap[$normalizedUri])) {
+    require $routeMap[$normalizedUri];
+    exit;
 }
 
 http_response_code(404);
