@@ -1,0 +1,13 @@
+{
+    "name": "musicstore/musicstore",
+    "description": "MusicStore - E-commerce de Instrumentos Musicais",
+    "type": "project",
+    "require": {
+        "php": ">=8.1"
+    },
+    "config": {
+        "platform": {
+            "php": "8.2"
+        }
+    }
+}
