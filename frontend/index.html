@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
 
-<meta name="api-base" content="https://musicstore-production-5765.up.railway.app/">
+<meta name="api-base" content="https://musicstore-production-5765.up.railway.app/api">
 <title>MusicStore — Sua loja de instrumentos</title>
 <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -1270,12 +1270,24 @@ const { createApp, ref, reactive, computed, onMounted, watch } = Vue;
 //   4. Fallback de produção (Railway)
 // =========================================
 const API = (() => {
+  const normalizeApiBase = (url) => {
+    const cleaned = String(url || '').trim().replace(/\/$/, '');
+    if (!cleaned) return '';
+    return cleaned.endsWith('/api') ? cleaned : `${cleaned}/api`;
+  };
+
   // 1. Meta tag injetada pelo servidor/build
   const meta = document.querySelector('meta[name="api-base"]');
-  if (meta && meta.content) return meta.content.replace(/\/$/, '');
+  if (meta && meta.content) {
+    const base = normalizeApiBase(meta.content);
+    if (base) return base;
+  }
 
   // 2. Quando servido pelo Railway em outro domínio via env injetada no HTML
-  if (window.__MUSICSTORE_API__) return window.__MUSICSTORE_API__.replace(/\/$/, '');
+  if (window.__MUSICSTORE_API__) {
+    const base = normalizeApiBase(window.__MUSICSTORE_API__);
+    if (base) return base;
+  }
 
   const { origin, pathname, protocol } = window.location;
 
