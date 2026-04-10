@@ -19,6 +19,13 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
 $uri  = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 $base = __DIR__;
 
+// Health check simples — sem banco de dados
+if ($uri === '/health') {
+    header('Content-Type: application/json');
+    echo json_encode(['status' => 'ok']);
+    exit;
+}
+
 // Servir arquivos estáticos que existam (ex.: favicon)
 if ($uri !== '/' && file_exists($base . $uri) && !is_dir($base . $uri)) {
     return false;
