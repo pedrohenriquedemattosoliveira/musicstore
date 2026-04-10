@@ -6,6 +6,22 @@
 // e repassa o header Authorization.
 // ============================================
 
+// Em produção, evita vazar warnings/stack traces em HTML.
+ini_set('display_errors', '0');
+
+set_exception_handler(function (Throwable $e): void {
+    http_response_code(500);
+    header('Content-Type: application/json; charset=utf-8');
+    error_log('Unhandled exception: ' . $e->getMessage());
+    echo json_encode(['error' => 'Erro interno no servidor.']);
+    exit;
+});
+
+set_error_handler(function (int $severity, string $message, string $file, int $line): bool {
+    // Converte erros PHP em exceções para cair no handler JSON acima.
+    throw new ErrorException($message, 0, $severity, $file, $line);
+});
+
 // CORS global para garantir preflight em qualquer rota.
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
