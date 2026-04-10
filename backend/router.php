@@ -6,6 +6,16 @@
 // e repassa o header Authorization.
 // ============================================
 
+// CORS global para garantir preflight em qualquer rota.
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
+header('Access-Control-Allow-Headers: Content-Type, Authorization, X-Auth-Token');
+
+if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'OPTIONS') {
+    http_response_code(200);
+    exit;
+}
+
 // Repassar Authorization para $_SERVER quando necessário
 if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
     // já disponível
@@ -67,4 +77,5 @@ if (isset($routeMap[$normalizedUri])) {
 }
 
 http_response_code(404);
+header('Content-Type: application/json');
 echo json_encode(['error' => 'Rota não encontrada']);

@@ -1264,9 +1264,10 @@ const { createApp, ref, reactive, computed, onMounted, watch } = Vue;
 // =========================================
 // API BASE URL
 // Prioridade:
-//   1. meta tag <meta name="api-base"> definida pelo servidor (Railway inject)
-//   2. Mesma origem quando o frontend está dentro de /frontend/
-//   3. Fallback local para XAMPP
+//   1. meta tag <meta name="api-base">
+//   2. window.__MUSICSTORE_API__
+//   3. Ambiente local com /frontend/ no path
+//   4. Fallback de produção (Railway)
 // =========================================
 const API = (() => {
   // 1. Meta tag injetada pelo servidor/build
@@ -1284,8 +1285,8 @@ const API = (() => {
     return `${origin}${base}/backend/api`;
   }
 
-  // 4. Fallback local padrão
-  return 'http://localhost/musicstore/backend/api';
+  // 4. Fallback de produção
+  return 'https://musicstore-production-5765.up.railway.app/api';
 })();
 
 const app = createApp({
