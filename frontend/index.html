@@ -1,0 +1,1665 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+<meta name="api-base" content="">
+<title>MusicStore — Sua loja de instrumentos</title>
+<script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+/* ============================================
+   MUSICSTORE - Design System
+   Tema: Industrial / Rock / Bold
+============================================ */
+:root {
+  --black:   #0a0a0a;
+  --dark:    #111111;
+  --panel:   #1a1a1a;
+  --border:  #2a2a2a;
+  --muted:   #444;
+  --text:    #e8e8e8;
+  --sub:     #888;
+  --accent:  #ff3c00;
+  --accent2: #ff7a00;
+  --gold:    #f5c518;
+  --green:   #00c896;
+  --red:     #ff4444;
+  --white:   #ffffff;
+  --font-display: 'Bebas Neue', sans-serif;
+  --font-body:    'DM Sans', sans-serif;
+  --font-mono:    'Space Mono', monospace;
+  --radius: 4px;
+  --shadow: 0 4px 24px rgba(0,0,0,0.5);
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--black);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.6;
+  min-height: 100vh;
+}
+a { color: inherit; text-decoration: none; }
+button { cursor: pointer; font-family: inherit; }
+input, textarea, select {
+  font-family: inherit;
+  font-size: 14px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  color: var(--text);
+  border-radius: var(--radius);
+  padding: 10px 14px;
+  outline: none;
+  transition: border-color .2s;
+  width: 100%;
+}
+input:focus, textarea:focus, select:focus { border-color: var(--accent); }
+label { display: block; font-size: 12px; color: var(--sub); margin-bottom: 5px; text-transform: uppercase; letter-spacing: .05em; }
+
+/* ===== LAYOUT ===== */
+#app { min-height: 100vh; display: flex; flex-direction: column; }
+.page { flex: 1; }
+
+/* ===== NAVBAR ===== */
+.navbar {
+  position: sticky; top: 0; z-index: 1000;
+  background: rgba(10,10,10,.95);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 32px;
+  display: flex; align-items: center; justify-content: space-between;
+  height: 64px;
+}
+.navbar-logo {
+  font-family: var(--font-display);
+  font-size: 28px;
+  letter-spacing: .08em;
+  color: var(--white);
+  cursor: pointer;
+}
+.navbar-logo span { color: var(--accent); }
+.navbar-menu { display: flex; gap: 4px; align-items: center; }
+.nav-btn {
+  background: none; border: none; color: var(--sub);
+  padding: 8px 14px; border-radius: var(--radius);
+  font-size: 14px; font-weight: 500;
+  transition: all .2s;
+}
+.nav-btn:hover { background: var(--panel); color: var(--text); }
+.nav-btn.active { color: var(--accent); }
+.nav-btn.cart-btn {
+  display: flex; align-items: center; gap: 6px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 7px 14px;
+}
+.nav-btn.cart-btn:hover { border-color: var(--accent); }
+.cart-badge {
+  background: var(--accent); color: var(--white);
+  border-radius: 50%; width: 18px; height: 18px;
+  font-size: 11px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+}
+.nav-user {
+  display: flex; align-items: center; gap: 10px;
+}
+.user-avatar {
+  width: 34px; height: 34px; border-radius: 50%;
+  background: var(--accent); color: var(--white);
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700; font-size: 13px;
+}
+.btn-logout {
+  background: none; border: 1px solid var(--border);
+  color: var(--sub); padding: 5px 12px;
+  border-radius: var(--radius); font-size: 13px;
+  transition: all .2s;
+}
+.btn-logout:hover { border-color: var(--red); color: var(--red); }
+
+/* ===== BUTTONS ===== */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  padding: 11px 22px; border-radius: var(--radius);
+  font-weight: 600; font-size: 14px; border: none;
+  transition: all .2s; white-space: nowrap;
+}
+.btn-primary { background: var(--accent); color: var(--white); }
+.btn-primary:hover { background: var(--accent2); transform: translateY(-1px); }
+.btn-secondary { background: var(--panel); color: var(--text); border: 1px solid var(--border); }
+.btn-secondary:hover { border-color: var(--accent); color: var(--accent); }
+.btn-ghost { background: none; color: var(--sub); border: 1px solid var(--border); }
+.btn-ghost:hover { color: var(--text); border-color: var(--muted); }
+.btn-danger { background: var(--red); color: var(--white); }
+.btn-danger:hover { opacity: .85; }
+.btn-success { background: var(--green); color: var(--black); }
+.btn-success:hover { opacity: .85; }
+.btn-sm { padding: 7px 14px; font-size: 13px; }
+.btn-lg { padding: 15px 32px; font-size: 16px; }
+.btn:disabled { opacity: .4; cursor: not-allowed; transform: none !important; }
+
+/* ===== CARDS ===== */
+.card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+/* ===== BADGE ===== */
+.badge {
+  display: inline-block; padding: 3px 9px;
+  border-radius: 100px; font-size: 11px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: .04em;
+}
+.badge-accent  { background: rgba(255,60,0,.15); color: var(--accent); }
+.badge-green   { background: rgba(0,200,150,.15); color: var(--green); }
+.badge-red     { background: rgba(255,68,68,.15); color: var(--red); }
+.badge-gold    { background: rgba(245,197,24,.15); color: var(--gold); }
+.badge-muted   { background: var(--border); color: var(--sub); }
+
+/* ===== FORMS ===== */
+.form-group { margin-bottom: 18px; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.form-error { color: var(--red); font-size: 13px; margin-top: 4px; }
+
+/* ===== ALERTS ===== */
+.alert {
+  padding: 12px 16px; border-radius: var(--radius);
+  font-size: 14px; display: flex; align-items: center; gap: 8px;
+}
+.alert-error   { background: rgba(255,68,68,.1); border: 1px solid rgba(255,68,68,.3); color: #ff8080; }
+.alert-success { background: rgba(0,200,150,.1); border: 1px solid rgba(0,200,150,.3); color: var(--green); }
+.alert-info    { background: rgba(255,122,0,.1); border: 1px solid rgba(255,122,0,.3); color: var(--accent2); }
+
+/* ===== MODAL ===== */
+.modal-overlay {
+  position: fixed; inset: 0; z-index: 2000;
+  background: rgba(0,0,0,.8);
+  display: flex; align-items: center; justify-content: center;
+  padding: 20px;
+  animation: fadeIn .15s ease;
+}
+.modal {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  width: 100%; max-width: 520px;
+  max-height: 90vh; overflow-y: auto;
+  animation: slideUp .2s ease;
+}
+.modal-header {
+  padding: 20px 24px 0;
+  display: flex; align-items: center; justify-content: space-between;
+  border-bottom: 1px solid var(--border); padding-bottom: 16px;
+}
+.modal-title { font-family: var(--font-display); font-size: 22px; letter-spacing: .05em; }
+.modal-close {
+  background: none; border: none; color: var(--sub);
+  font-size: 20px; padding: 4px 8px; border-radius: var(--radius);
+  transition: color .2s;
+}
+.modal-close:hover { color: var(--text); }
+.modal-body { padding: 24px; }
+.modal-footer {
+  padding: 16px 24px;
+  border-top: 1px solid var(--border);
+  display: flex; justify-content: flex-end; gap: 10px;
+}
+
+/* ===== SECTION HEADERS ===== */
+.section-title {
+  font-family: var(--font-display);
+  font-size: 42px; letter-spacing: .04em;
+  line-height: 1;
+}
+.section-sub { color: var(--sub); margin-top: 6px; }
+
+/* ===== GRID ===== */
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 20px;
+}
+
+/* ===== PRODUCT CARD ===== */
+.product-card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  overflow: hidden;
+  transition: all .25s;
+  display: flex; flex-direction: column;
+}
+.product-card:hover {
+  border-color: var(--muted);
+  transform: translateY(-3px);
+  box-shadow: var(--shadow);
+}
+.product-card-img {
+  width: 100%; height: 200px;
+  object-fit: cover; display: block;
+  background: var(--dark);
+}
+.product-card-body { padding: 16px; flex: 1; display: flex; flex-direction: column; }
+.product-brand { font-size: 11px; color: var(--accent); text-transform: uppercase; letter-spacing: .07em; font-weight: 600; }
+.product-name { font-weight: 600; font-size: 15px; margin: 4px 0 8px; line-height: 1.3; }
+.product-price {
+  font-family: var(--font-mono);
+  color: var(--gold); font-size: 18px; font-weight: 700;
+}
+.product-card-footer { padding: 12px 16px; border-top: 1px solid var(--border); display: flex; gap: 8px; }
+.stock-low { color: var(--red); font-size: 12px; margin-top: 4px; }
+
+/* ===== TABLE ===== */
+.table { width: 100%; border-collapse: collapse; }
+.table th {
+  text-align: left; padding: 12px 16px;
+  font-size: 11px; text-transform: uppercase; letter-spacing: .07em;
+  color: var(--sub); border-bottom: 1px solid var(--border);
+  font-weight: 600;
+}
+.table td { padding: 14px 16px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+.table tr:last-child td { border-bottom: none; }
+.table tr:hover td { background: rgba(255,255,255,.02); }
+.table-wrap { overflow-x: auto; }
+
+/* ===== TABS ===== */
+.tabs { display: flex; gap: 2px; border-bottom: 1px solid var(--border); margin-bottom: 24px; }
+.tab-btn {
+  background: none; border: none; color: var(--sub);
+  padding: 10px 20px; font-size: 14px; font-weight: 500;
+  border-bottom: 2px solid transparent; margin-bottom: -1px;
+  transition: all .2s;
+}
+.tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+.tab-btn:hover:not(.active) { color: var(--text); }
+
+/* ===== STAT CARDS ===== */
+.stat-card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 22px;
+}
+.stat-label { font-size: 12px; color: var(--sub); text-transform: uppercase; letter-spacing: .06em; }
+.stat-value { font-family: var(--font-display); font-size: 38px; letter-spacing: .03em; margin-top: 4px; }
+.stat-icon { font-size: 28px; }
+.stats-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 16px; }
+
+/* ===== LANDING ===== */
+.hero {
+  min-height: 80vh;
+  display: flex; align-items: center; justify-content: center;
+  text-align: center;
+  background:
+    radial-gradient(ellipse at 20% 50%, rgba(255,60,0,.12) 0%, transparent 60%),
+    radial-gradient(ellipse at 80% 50%, rgba(255,122,0,.08) 0%, transparent 60%),
+    linear-gradient(180deg, #0a0a0a 0%, #111 100%);
+  position: relative; overflow: hidden;
+  padding: 80px 32px;
+}
+.hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image:
+    repeating-linear-gradient(0deg, transparent, transparent 40px, rgba(255,255,255,.015) 40px, rgba(255,255,255,.015) 41px),
+    repeating-linear-gradient(90deg, transparent, transparent 40px, rgba(255,255,255,.015) 40px, rgba(255,255,255,.015) 41px);
+}
+.hero-content { position: relative; z-index: 1; max-width: 700px; }
+.hero-eyebrow {
+  font-family: var(--font-mono); font-size: 12px; color: var(--accent);
+  text-transform: uppercase; letter-spacing: .15em; margin-bottom: 20px;
+}
+.hero-title {
+  font-family: var(--font-display);
+  font-size: clamp(60px, 10vw, 110px);
+  line-height: .95; letter-spacing: .03em;
+  color: var(--white);
+}
+.hero-title .accent { color: var(--accent); }
+.hero-sub { color: var(--sub); font-size: 18px; margin: 20px 0 36px; line-height: 1.6; }
+.hero-btns { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+
+.features-strip {
+  background: var(--panel);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  padding: 32px;
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 24px;
+}
+.feature-item { text-align: center; }
+.feature-icon { font-size: 28px; margin-bottom: 8px; }
+.feature-label { font-size: 13px; font-weight: 600; }
+.feature-sub { font-size: 12px; color: var(--sub); }
+
+/* ===== FOOTER ===== */
+footer {
+  background: var(--dark);
+  border-top: 1px solid var(--border);
+  padding: 32px;
+  text-align: center;
+  color: var(--sub); font-size: 13px;
+}
+
+/* ===== SIDEBAR CART ===== */
+.cart-sidebar {
+  position: fixed; right: 0; top: 0; bottom: 0;
+  width: 380px; max-width: 100vw;
+  background: var(--panel);
+  border-left: 1px solid var(--border);
+  z-index: 1500;
+  display: flex; flex-direction: column;
+  transform: translateX(100%);
+  transition: transform .3s cubic-bezier(.4,0,.2,1);
+  box-shadow: -8px 0 40px rgba(0,0,0,.5);
+}
+.cart-sidebar.open { transform: translateX(0); }
+.cart-overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,.6);
+  z-index: 1400;
+  animation: fadeIn .2s ease;
+}
+.cart-header {
+  padding: 20px 22px;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.cart-title { font-family: var(--font-display); font-size: 24px; letter-spacing: .04em; }
+.cart-items { flex: 1; overflow-y: auto; padding: 16px; }
+.cart-item {
+  display: flex; gap: 12px;
+  padding: 12px;
+  border-radius: var(--radius);
+  background: var(--dark);
+  margin-bottom: 10px;
+}
+.cart-item-img { width: 70px; height: 70px; object-fit: cover; border-radius: 4px; flex-shrink: 0; }
+.cart-item-info { flex: 1; min-width: 0; }
+.cart-item-name { font-size: 14px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.cart-item-price { font-family: var(--font-mono); color: var(--gold); font-size: 14px; }
+.qty-control { display: flex; align-items: center; gap: 8px; margin-top: 8px; }
+.qty-btn {
+  width: 26px; height: 26px; border-radius: 4px;
+  background: var(--panel); border: 1px solid var(--border);
+  color: var(--text); font-size: 16px;
+  display: flex; align-items: center; justify-content: center;
+  transition: all .15s;
+}
+.qty-btn:hover { border-color: var(--accent); color: var(--accent); }
+.cart-footer { padding: 20px; border-top: 1px solid var(--border); }
+.cart-total-row { display: flex; justify-content: space-between; font-size: 18px; font-weight: 700; margin-bottom: 16px; }
+.cart-total-val { font-family: var(--font-mono); color: var(--gold); }
+
+/* ===== STATUS COLORS ===== */
+.status-pending    { color: var(--gold); }
+.status-processing { color: var(--accent2); }
+.status-shipped    { color: #4fc3f7; }
+.status-delivered  { color: var(--green); }
+.status-cancelled  { color: var(--red); }
+
+/* ===== PAGE SECTIONS ===== */
+.container { max-width: 1200px; margin: 0 auto; padding: 0 32px; }
+.section { padding: 60px 0; }
+
+/* ===== AUTH PAGE ===== */
+.auth-page {
+  min-height: calc(100vh - 64px);
+  display: flex; align-items: center; justify-content: center;
+  background:
+    radial-gradient(ellipse at 30% 60%, rgba(255,60,0,.07) 0%, transparent 50%),
+    var(--black);
+  padding: 40px 20px;
+}
+.auth-box {
+  width: 100%; max-width: 440px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 40px;
+}
+.auth-title { font-family: var(--font-display); font-size: 32px; letter-spacing: .05em; margin-bottom: 6px; }
+.auth-sub { color: var(--sub); font-size: 14px; margin-bottom: 28px; }
+.auth-switch { text-align: center; margin-top: 20px; font-size: 14px; color: var(--sub); }
+.auth-switch a { color: var(--accent); font-weight: 600; cursor: pointer; }
+
+/* ===== ADMIN SIDEBAR ===== */
+.admin-layout { display: flex; min-height: calc(100vh - 64px); }
+.admin-sidebar {
+  width: 220px; flex-shrink: 0;
+  background: var(--dark);
+  border-right: 1px solid var(--border);
+  padding: 24px 0;
+}
+.admin-nav-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 11px 22px;
+  color: var(--sub); font-size: 14px; font-weight: 500;
+  cursor: pointer; transition: all .15s;
+  border-left: 2px solid transparent;
+}
+.admin-nav-item:hover { background: rgba(255,255,255,.03); color: var(--text); }
+.admin-nav-item.active { color: var(--accent); border-left-color: var(--accent); background: rgba(255,60,0,.07); }
+.admin-content { flex: 1; padding: 32px; overflow-x: hidden; }
+.admin-page-title { font-family: var(--font-display); font-size: 34px; letter-spacing: .05em; margin-bottom: 24px; }
+
+/* ===== SEARCH BAR ===== */
+.search-bar {
+  display: flex; gap: 10px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 6px 12px;
+  align-items: center;
+}
+.search-bar input {
+  background: none; border: none; color: var(--text);
+  flex: 1; padding: 6px 4px;
+}
+.search-bar input:focus { border: none; }
+
+/* ===== ANIMATIONS ===== */
+@keyframes spin { from { transform: rotate(0deg) } to { transform: rotate(360deg) } }
+@keyframes slideUp { from { opacity: 0; transform: translateY(16px) } to { opacity: 1; transform: none } }
+.fade-enter-active, .fade-leave-active { transition: opacity .15s; }
+.fade-enter-from, .fade-leave-to { opacity: 0; }
+
+/* ===== TOAST ===== */
+.toast-container { position: fixed; bottom: 24px; right: 24px; z-index: 3000; display: flex; flex-direction: column; gap: 10px; }
+.toast {
+  background: var(--panel); border: 1px solid var(--border);
+  color: var(--text); padding: 12px 20px; border-radius: 6px;
+  font-size: 14px; box-shadow: var(--shadow);
+  animation: slideUp .2s ease;
+  max-width: 320px;
+}
+.toast.success { border-left: 3px solid var(--green); }
+.toast.error   { border-left: 3px solid var(--red); }
+.toast.info    { border-left: 3px solid var(--accent); }
+
+/* ===== PRODUCT DETAIL ===== */
+.product-detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: start; }
+.product-detail-img { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 6px; background: var(--panel); }
+.product-detail-price { font-family: var(--font-mono); font-size: 36px; color: var(--gold); }
+
+/* ===== EMPTY STATE ===== */
+.empty-state { text-align: center; padding: 80px 20px; }
+.empty-icon { font-size: 60px; margin-bottom: 16px; opacity: .4; }
+.empty-title { font-family: var(--font-display); font-size: 28px; letter-spacing: .04em; color: var(--sub); }
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  .navbar { padding: 0 16px; }
+  .container { padding: 0 16px; }
+  .section { padding: 40px 0; }
+  .hero { padding: 60px 16px; }
+  .product-detail-grid { grid-template-columns: 1fr; }
+  .admin-sidebar { width: 60px; }
+  .admin-nav-item span { display: none; }
+  .admin-content { padding: 20px; }
+  .form-row { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<div id="app">
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="navbar-logo" @click="go('home')">MUSIC<span>STORE</span></div>
+    <div class="navbar-menu">
+      <button class="nav-btn" :class="{active: page==='home'}" @click="go('home')">Início</button>
+      <button class="nav-btn" :class="{active: page==='shop'}" @click="go('shop')">Loja</button>
+      <template v-if="user">
+        <button class="nav-btn" :class="{active: page==='orders'}" @click="go('orders')" v-if="user.role==='customer'">Meus Pedidos</button>
+        <button class="nav-btn" :class="{active: page==='admin'}" @click="go('admin')" v-if="user.role==='admin'">Admin</button>
+        <button class="nav-btn cart-btn" @click="cartOpen=true">
+          🛒 Carrinho
+          <span class="cart-badge" v-if="cartCount>0">{{cartCount}}</span>
+        </button>
+        <div class="nav-user">
+          <div class="user-avatar">{{user.name[0].toUpperCase()}}</div>
+          <button class="btn-logout" @click="logout">Sair</button>
+        </div>
+      </template>
+      <template v-else>
+        <button class="btn btn-secondary btn-sm" @click="go('login')">Entrar</button>
+        <button class="btn btn-primary btn-sm" @click="go('register')">Cadastrar</button>
+      </template>
+    </div>
+  </nav>
+
+  <!-- PAGES -->
+  <div class="page">
+    <transition name="fade" mode="out-in">
+      <!-- HOME -->
+      <div v-if="page==='home'" key="home">
+        <section class="hero">
+          <div class="hero-content">
+            <div class="hero-eyebrow">// A sua loja de instrumentos musicais</div>
+            <h1 class="hero-title">TOQUE<br>SEM<br><span class="accent">LIMITES</span></h1>
+            <p class="hero-sub">Os melhores instrumentos das marcas mais reconhecidas do mundo. Guitarra, baixo, bateria, teclado e muito mais.</p>
+            <div class="hero-btns">
+              <button class="btn btn-primary btn-lg" @click="go('shop')">Explorar Loja</button>
+              <button class="btn btn-ghost btn-lg" @click="go('login')" v-if="!user">Criar conta grátis</button>
+            </div>
+          </div>
+        </section>
+
+        <div class="features-strip">
+          <div class="feature-item">
+            <div class="feature-icon">🎸</div>
+            <div class="feature-label">+500 Produtos</div>
+            <div class="feature-sub">Linha completa de instrumentos</div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon">🚚</div>
+            <div class="feature-label">Frete Grátis</div>
+            <div class="feature-sub">Para compras acima de R$ 500</div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon">🏆</div>
+            <div class="feature-label">Garantia</div>
+            <div class="feature-sub">12 meses de garantia</div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon">💳</div>
+            <div class="feature-label">Parcelamento</div>
+            <div class="feature-sub">Em até 12x sem juros</div>
+          </div>
+        </div>
+
+        <!-- FEATURED PRODUCTS -->
+        <div class="container section">
+          <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:32px">
+            <div>
+              <div class="section-title">EM DESTAQUE</div>
+              <div class="section-sub">Os mais procurados da semana</div>
+            </div>
+            <button class="btn btn-ghost btn-sm" @click="go('shop')">Ver todos →</button>
+          </div>
+          <div class="products-grid" v-if="featuredProducts.length">
+            <div class="product-card" v-for="p in featuredProducts" :key="p.id">
+              <img class="product-card-img" :src="p.image_url || 'https://via.placeholder.com/400x300/1a1a1a/444?text=Produto'" :alt="p.name" />
+              <div class="product-card-body">
+                <div class="product-brand">{{p.brand}}</div>
+                <div class="product-name">{{p.name}}</div>
+                <div class="product-price">R$ {{fmt(p.price)}}</div>
+                <div class="stock-low" v-if="p.stock<=3&&p.stock>0">⚠ Apenas {{p.stock}} em estoque</div>
+              </div>
+              <div class="product-card-footer">
+                <button class="btn btn-secondary btn-sm" style="flex:1" @click="openProduct(p)">Ver mais</button>
+                <button class="btn btn-primary btn-sm" @click="addToCart(p)" :disabled="p.stock===0">
+                  {{p.stock===0?'Sem estoque':'+ Carrinho'}}
+                </button>
+              </div>
+            </div>
+          </div>
+          <div v-else class="empty-state">
+            <div class="empty-icon">🎵</div>
+            <div class="empty-title">Carregando produtos...</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SHOP -->
+      <div v-else-if="page==='shop'" key="shop">
+        <div class="container section">
+          <div style="display:flex;align-items:baseline;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:32px">
+            <div>
+              <div class="section-title">LOJA</div>
+              <div class="section-sub">{{filteredProducts.length}} produto(s) encontrado(s)</div>
+            </div>
+            <div style="display:flex;gap:10px;flex-wrap:wrap">
+              <div class="search-bar" style="width:240px">
+                <span style="color:var(--sub)">🔍</span>
+                <input type="text" v-model="shopSearch" placeholder="Buscar produtos..." />
+              </div>
+              <select v-model="shopCategory" style="width:auto">
+                <option value="">Todas categorias</option>
+                <option v-for="c in categories" :key="c.id" :value="c.slug">{{c.name}}</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- CATEGORY PILLS -->
+          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:28px">
+            <button class="btn btn-sm" :class="shopCategory===''?'btn-primary':'btn-ghost'" @click="shopCategory=''">Tudo</button>
+            <button class="btn btn-sm" v-for="c in categories" :key="c.id"
+              :class="shopCategory===c.slug?'btn-primary':'btn-ghost'"
+              @click="shopCategory=c.slug">{{c.name}}</button>
+          </div>
+
+          <div class="products-grid" v-if="filteredProducts.length">
+            <div class="product-card" v-for="p in filteredProducts" :key="p.id">
+              <img class="product-card-img" :src="p.image_url || 'https://via.placeholder.com/400x300/1a1a1a/444?text=Produto'" :alt="p.name" />
+              <div class="product-card-body">
+                <div style="display:flex;align-items:center;justify-content:space-between">
+                  <div class="product-brand">{{p.brand}}</div>
+                  <span class="badge badge-muted" style="font-size:10px">{{p.category_name}}</span>
+                </div>
+                <div class="product-name">{{p.name}}</div>
+                <div class="product-price">R$ {{fmt(p.price)}}</div>
+                <div class="stock-low" v-if="p.stock<=3&&p.stock>0">⚠ Apenas {{p.stock}} em estoque</div>
+                <div class="stock-low" v-if="p.stock===0">❌ Sem estoque</div>
+              </div>
+              <div class="product-card-footer">
+                <button class="btn btn-secondary btn-sm" style="flex:1" @click="openProduct(p)">Detalhes</button>
+                <button class="btn btn-primary btn-sm" @click="addToCart(p)" :disabled="p.stock===0">+ Carrinho</button>
+              </div>
+            </div>
+          </div>
+          <div v-else class="empty-state">
+            <div class="empty-icon">🔍</div>
+            <div class="empty-title">Nenhum produto encontrado</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- LOGIN -->
+      <div v-else-if="page==='login'" key="login" class="auth-page">
+        <div class="auth-box">
+          <div class="auth-title">ENTRAR</div>
+          <div class="auth-sub">Acesse sua conta para continuar</div>
+          <div class="alert alert-error" v-if="authError" style="margin-bottom:16px">{{authError}}</div>
+          <div class="form-group">
+            <label>E-mail</label>
+            <input type="email" v-model="loginForm.email" placeholder="seu@email.com" @keyup.enter="doLogin" />
+          </div>
+          <div class="form-group">
+            <label>Senha</label>
+            <input type="password" v-model="loginForm.password" placeholder="••••••••" @keyup.enter="doLogin" />
+          </div>
+          <button class="btn btn-primary" style="width:100%" @click="doLogin" :disabled="authLoading">
+            {{authLoading?'Entrando...':'Entrar'}}
+          </button>
+          <div class="auth-switch">Não tem conta? <a @click="go('register')">Cadastre-se grátis</a></div>
+        </div>
+      </div>
+
+      <!-- REGISTER -->
+      <div v-else-if="page==='register'" key="register" class="auth-page">
+        <div class="auth-box">
+          <div class="auth-title">CADASTRO</div>
+          <div class="auth-sub">Crie sua conta e comece a comprar</div>
+          <div class="alert alert-error" v-if="authError" style="margin-bottom:16px">{{authError}}</div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Nome completo</label>
+              <input type="text" v-model="regForm.name" placeholder="Seu nome" />
+            </div>
+            <div class="form-group">
+              <label>Telefone</label>
+              <input type="tel" v-model="regForm.phone" placeholder="(11) 99999-9999" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label>E-mail</label>
+            <input type="email" v-model="regForm.email" placeholder="seu@email.com" />
+          </div>
+          <div class="form-group">
+            <label>Senha (mínimo 6 caracteres)</label>
+            <input type="password" v-model="regForm.password" placeholder="••••••••" />
+          </div>
+          <button class="btn btn-primary" style="width:100%" @click="doRegister" :disabled="authLoading">
+            {{authLoading?'Cadastrando...':'Criar conta'}}
+          </button>
+          <div class="auth-switch">Já tem conta? <a @click="go('login')">Entrar</a></div>
+        </div>
+      </div>
+
+      <!-- MY ORDERS -->
+      <div v-else-if="page==='orders'" key="orders">
+        <div class="container section">
+          <div class="section-title" style="margin-bottom:24px">MEUS PEDIDOS</div>
+          <div v-if="myOrders.length===0" class="empty-state">
+            <div class="empty-icon">📦</div>
+            <div class="empty-title">Nenhum pedido ainda</div>
+            <button class="btn btn-primary" style="margin-top:20px" @click="go('shop')">Ir para loja</button>
+          </div>
+          <div class="card" v-else>
+            <div class="table-wrap">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>#</th><th>Data</th><th>Itens</th><th>Total</th><th>Status</th><th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="o in myOrders" :key="o.id">
+                    <td><span style="font-family:var(--font-mono);color:var(--sub)">#{{o.id}}</span></td>
+                    <td>{{fmtDate(o.created_at)}}</td>
+                    <td>{{o.item_count}} item(ns)</td>
+                    <td><span style="font-family:var(--font-mono);color:var(--gold)">R$ {{fmt(o.total)}}</span></td>
+                    <td><span :class="'status-'+o.status">{{statusLabel(o.status)}}</span></td>
+                    <td><button class="btn btn-ghost btn-sm" @click="viewOrder(o.id)">Ver detalhes</button></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ADMIN -->
+      <div v-else-if="page==='admin'" key="admin">
+        <div class="admin-layout">
+          <aside class="admin-sidebar">
+            <div v-for="item in adminMenu" :key="item.key"
+                 class="admin-nav-item"
+                 :class="{active: adminTab===item.key}"
+                 @click="adminTab=item.key">
+              <span>{{item.icon}}</span>
+              <span>{{item.label}}</span>
+            </div>
+          </aside>
+          <div class="admin-content">
+
+            <!-- DASHBOARD -->
+            <div v-if="adminTab==='dashboard'">
+              <div class="admin-page-title">DASHBOARD</div>
+              <div class="stats-grid" style="margin-bottom:28px">
+                <div class="stat-card">
+                  <div style="display:flex;justify-content:space-between;align-items:start">
+                    <div>
+                      <div class="stat-label">Receita Total</div>
+                      <div class="stat-value" style="color:var(--gold)">R${{fmtK(stats.revenue)}}</div>
+                    </div>
+                    <span class="stat-icon">💰</span>
+                  </div>
+                </div>
+                <div class="stat-card">
+                  <div style="display:flex;justify-content:space-between;align-items:start">
+                    <div>
+                      <div class="stat-label">Pedidos</div>
+                      <div class="stat-value">{{stats.orders}}</div>
+                    </div>
+                    <span class="stat-icon">📦</span>
+                  </div>
+                </div>
+                <div class="stat-card">
+                  <div style="display:flex;justify-content:space-between;align-items:start">
+                    <div>
+                      <div class="stat-label">Produtos Ativos</div>
+                      <div class="stat-value">{{stats.products}}</div>
+                    </div>
+                    <span class="stat-icon">🎸</span>
+                  </div>
+                </div>
+                <div class="stat-card">
+                  <div style="display:flex;justify-content:space-between;align-items:start">
+                    <div>
+                      <div class="stat-label">Clientes</div>
+                      <div class="stat-value">{{stats.customers}}</div>
+                    </div>
+                    <span class="stat-icon">👥</span>
+                  </div>
+                </div>
+                <div class="stat-card" v-if="stats.low_stock>0">
+                  <div style="display:flex;justify-content:space-between;align-items:start">
+                    <div>
+                      <div class="stat-label">Estoque Baixo</div>
+                      <div class="stat-value" style="color:var(--red)">{{stats.low_stock}}</div>
+                    </div>
+                    <span class="stat-icon">⚠️</span>
+                  </div>
+                </div>
+              </div>
+
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;flex-wrap:wrap">
+                <div class="card">
+                  <div style="padding:20px;border-bottom:1px solid var(--border);font-weight:600">Pedidos Recentes</div>
+                  <table class="table">
+                    <thead><tr><th>#</th><th>Cliente</th><th>Total</th><th>Status</th></tr></thead>
+                    <tbody>
+                      <tr v-for="o in stats.recent_orders" :key="o.id">
+                        <td style="font-family:var(--font-mono);color:var(--sub)">#{{o.id}}</td>
+                        <td>{{o.customer_name}}</td>
+                        <td style="font-family:var(--font-mono);color:var(--gold)">R$ {{fmt(o.total)}}</td>
+                        <td><span :class="'status-'+o.status">{{statusLabel(o.status)}}</span></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div class="card">
+                  <div style="padding:20px;border-bottom:1px solid var(--border);font-weight:600">Mais Vendidos</div>
+                  <table class="table">
+                    <thead><tr><th>Produto</th><th>Vendidos</th><th>Preço</th></tr></thead>
+                    <tbody>
+                      <tr v-for="p in stats.top_products" :key="p.name">
+                        <td>{{p.name}}</td>
+                        <td><span class="badge badge-green">{{p.sold}}</span></td>
+                        <td style="font-family:var(--font-mono);color:var(--gold)">R$ {{fmt(p.price)}}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <!-- PRODUCTS ADMIN -->
+            <div v-if="adminTab==='products'">
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px">
+                <div class="admin-page-title">PRODUTOS</div>
+                <button class="btn btn-primary" @click="openProductForm(null)">+ Novo Produto</button>
+              </div>
+              <div class="card">
+                <div style="padding:16px;border-bottom:1px solid var(--border)">
+                  <input type="text" v-model="adminProductSearch" placeholder="Buscar produto..." style="max-width:300px" />
+                </div>
+                <div class="table-wrap">
+                  <table class="table">
+                    <thead>
+                      <tr><th>Produto</th><th>Categoria</th><th>Preço</th><th>Estoque</th><th>Status</th><th>Ações</th></tr>
+                    </thead>
+                    <tbody>
+                      <tr v-for="p in adminFilteredProducts" :key="p.id">
+                        <td>
+                          <div style="display:flex;align-items:center;gap:10px">
+                            <img :src="p.image_url||'https://via.placeholder.com/40x40/1a1a1a/444'" style="width:40px;height:40px;object-fit:cover;border-radius:4px" />
+                            <div>
+                              <div style="font-weight:600">{{p.name}}</div>
+                              <div style="font-size:12px;color:var(--sub)">{{p.brand}} · {{p.sku}}</div>
+                            </div>
+                          </div>
+                        </td>
+                        <td>{{p.category_name||'—'}}</td>
+                        <td><span style="font-family:var(--font-mono);color:var(--gold)">R$ {{fmt(p.price)}}</span></td>
+                        <td>
+                          <span :style="p.stock<=3?'color:var(--red)':''">{{p.stock}}</span>
+                        </td>
+                        <td>
+                          <span class="badge" :class="p.active?'badge-green':'badge-red'">{{p.active?'Ativo':'Inativo'}}</span>
+                          <span class="badge badge-gold" v-if="p.featured" style="margin-left:4px">Destaque</span>
+                        </td>
+                        <td>
+                          <div style="display:flex;gap:6px">
+                            <button class="btn btn-ghost btn-sm" @click="openProductForm(p)">✏️ Editar</button>
+                            <button class="btn btn-danger btn-sm" @click="confirmDelete(p)">🗑</button>
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <!-- ORDERS ADMIN -->
+            <div v-if="adminTab==='orders'">
+              <div class="admin-page-title">PEDIDOS</div>
+              <div class="card">
+                <div class="table-wrap">
+                  <table class="table">
+                    <thead>
+                      <tr><th>#</th><th>Cliente</th><th>Data</th><th>Total</th><th>Status</th><th>Ações</th></tr>
+                    </thead>
+                    <tbody>
+                      <tr v-for="o in allOrders" :key="o.id">
+                        <td><span style="font-family:var(--font-mono);color:var(--sub)">#{{o.id}}</span></td>
+                        <td>
+                          <div>{{o.customer_name}}</div>
+                          <div style="font-size:12px;color:var(--sub)">{{o.customer_email}}</div>
+                        </td>
+                        <td>{{fmtDate(o.created_at)}}</td>
+                        <td><span style="font-family:var(--font-mono);color:var(--gold)">R$ {{fmt(o.total)}}</span></td>
+                        <td>
+                          <select :value="o.status" @change="changeOrderStatus(o.id, $event.target.value)"
+                                  style="width:auto;font-size:13px;padding:6px 10px">
+                            <option value="pending">Pendente</option>
+                            <option value="processing">Processando</option>
+                            <option value="shipped">Enviado</option>
+                            <option value="delivered">Entregue</option>
+                            <option value="cancelled">Cancelado</option>
+                          </select>
+                        </td>
+                        <td><button class="btn btn-ghost btn-sm" @click="viewOrder(o.id)">Detalhes</button></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </transition>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div style="font-family:var(--font-display);font-size:22px;margin-bottom:8px">MUSIC<span style="color:var(--accent)">STORE</span></div>
+    <div>© 2024 MusicStore — Projeto Acadêmico de E-commerce · Todos os direitos reservados</div>
+  </footer>
+
+  <!-- CART SIDEBAR -->
+  <div class="cart-overlay" v-if="cartOpen" @click="cartOpen=false"></div>
+  <div class="cart-sidebar" :class="{open: cartOpen}">
+    <div class="cart-header">
+      <div class="cart-title">CARRINHO</div>
+      <button class="modal-close" @click="cartOpen=false">✕</button>
+    </div>
+    <div class="cart-items">
+      <div v-if="!user" class="empty-state" style="padding:40px 20px">
+        <div class="empty-icon">🔐</div>
+        <div class="empty-title" style="font-size:18px">Faça login para ver o carrinho</div>
+        <button class="btn btn-primary" style="margin-top:16px" @click="cartOpen=false;go('login')">Entrar</button>
+      </div>
+      <div v-else-if="cart.items&&cart.items.length===0" class="empty-state" style="padding:40px 20px">
+        <div class="empty-icon">🛒</div>
+        <div class="empty-title" style="font-size:18px">Carrinho vazio</div>
+        <button class="btn btn-primary" style="margin-top:16px" @click="cartOpen=false;go('shop')">Ver produtos</button>
+      </div>
+      <div v-else-if="cart.items">
+        <div class="cart-item" v-for="item in cart.items" :key="item.id">
+          <img class="cart-item-img" :src="item.image_url||'https://via.placeholder.com/70x70/1a1a1a/444'" :alt="item.name" />
+          <div class="cart-item-info">
+            <div class="cart-item-name">{{item.name}}</div>
+            <div class="cart-item-price">R$ {{fmt(item.price * item.quantity)}}</div>
+            <div class="qty-control">
+              <button class="qty-btn" @click="updateQty(item, item.quantity-1)">−</button>
+              <span style="font-family:var(--font-mono);font-size:14px">{{item.quantity}}</span>
+              <button class="qty-btn" @click="updateQty(item, item.quantity+1)" :disabled="item.quantity>=item.stock">+</button>
+              <button class="qty-btn" @click="removeFromCart(item)" style="margin-left:4px;color:var(--red)">🗑</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="cart-footer" v-if="user&&cart.items&&cart.items.length>0">
+      <div class="cart-total-row">
+        <span>Total</span>
+        <span class="cart-total-val">R$ {{fmt(cart.total)}}</span>
+      </div>
+      <button class="btn btn-primary" style="width:100%" @click="openCheckout()">
+        Finalizar Compra
+      </button>
+      <button class="btn btn-ghost btn-sm" style="width:100%;margin-top:8px" @click="clearCart">
+        Limpar carrinho
+      </button>
+    </div>
+  </div>
+
+  <!-- PRODUCT MODAL -->
+  <div class="modal-overlay" v-if="selectedProduct" @click.self="selectedProduct=null">
+    <div class="modal" style="max-width:760px">
+      <div class="modal-header">
+        <div class="modal-title">{{selectedProduct.name}}</div>
+        <button class="modal-close" @click="selectedProduct=null">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="product-detail-grid">
+          <img class="product-detail-img" :src="selectedProduct.image_url||'https://via.placeholder.com/400x400/1a1a1a/444'" :alt="selectedProduct.name" />
+          <div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px">
+              <span class="badge badge-accent">{{selectedProduct.category_name}}</span>
+              <span class="badge badge-muted">{{selectedProduct.brand}}</span>
+              <span class="badge badge-gold" v-if="selectedProduct.featured">Destaque</span>
+            </div>
+            <div class="product-detail-price">R$ {{fmt(selectedProduct.price)}}</div>
+            <div style="font-size:13px;color:var(--sub);margin:8px 0">
+              <span v-if="selectedProduct.stock>0" :style="selectedProduct.stock<=3?'color:var(--red)':''">
+                {{selectedProduct.stock<=3?`⚠ Apenas ${selectedProduct.stock} em estoque`:`✓ ${selectedProduct.stock} em estoque`}}
+              </span>
+              <span v-else style="color:var(--red)">❌ Sem estoque</span>
+            </div>
+            <p style="color:var(--sub);font-size:14px;line-height:1.7;margin:16px 0">{{selectedProduct.description}}</p>
+            <div style="font-size:12px;color:var(--muted);margin-bottom:20px" v-if="selectedProduct.sku">SKU: {{selectedProduct.sku}}</div>
+            <button class="btn btn-primary btn-lg" style="width:100%" @click="addToCart(selectedProduct);selectedProduct=null" :disabled="selectedProduct.stock===0">
+              {{selectedProduct.stock===0?'Sem estoque':'Adicionar ao Carrinho'}}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CHECKOUT MODAL -->
+  <div class="modal-overlay" v-if="showCheckout" @click.self="checkoutStep<3&&(showCheckout=false)">
+    <div class="modal" style="max-width:500px">
+
+      <!-- STEP INDICATOR -->
+      <div style="padding:20px 24px 0;display:flex;gap:0;align-items:center" v-if="checkoutStep<4">
+        <div v-for="s in [1,2]" :key="s" style="display:flex;align-items:center;flex:1">
+          <div :style="`width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;background:${checkoutStep>=s?'var(--accent)':'var(--border)'};color:${checkoutStep>=s?'#fff':'var(--sub)'}`">{{s}}</div>
+          <div :style="`flex:1;height:2px;background:${checkoutStep>s?'var(--accent)':'var(--border)'}`" v-if="s<2"></div>
+          <div style="margin-left:8px;font-size:12px;color:var(--sub)" v-if="s<2">{{s===1?'Entrega':''}}</div>
+        </div>
+        <div style="margin-left:8px;font-size:12px;color:var(--sub)">Pagamento</div>
+      </div>
+
+      <div class="modal-header" style="margin-top:16px">
+        <div class="modal-title">
+          {{checkoutStep===1?'ENDEREÇO DE ENTREGA':checkoutStep===2?'PAGAMENTO':checkoutStep===3?'PROCESSANDO...':'PEDIDO CONFIRMADO!'}}
+        </div>
+        <button class="modal-close" @click="showCheckout=false" v-if="checkoutStep<3">✕</button>
+      </div>
+
+      <!-- STEP 1: Endereço -->
+      <div class="modal-body" v-if="checkoutStep===1">
+        <div class="alert alert-info" style="margin-bottom:20px">
+          🛒 <strong>{{cart.count}} item(ns)</strong> · Total: <strong style="font-family:var(--font-mono)">R$ {{fmt(cart.total)}}</strong>
+        </div>
+        <div class="form-group">
+          <label>Endereço Completo *</label>
+          <textarea v-model="checkoutAddress" rows="3" placeholder="Rua das Guitarras, 42, Apto 5&#10;Bairro Centro — São Paulo, SP&#10;CEP: 01310-100" style="resize:vertical"></textarea>
+        </div>
+        <div class="form-group">
+          <label>Observações para entrega (opcional)</label>
+          <textarea v-model="checkoutNotes" rows="2" placeholder="Ex: Deixar com o porteiro, tocar campainha 2x..." style="resize:vertical"></textarea>
+        </div>
+      </div>
+
+      <!-- STEP 2: Pagamento simulado -->
+      <div class="modal-body" v-else-if="checkoutStep===2">
+        <div class="alert alert-success" style="margin-bottom:20px">
+          🔒 Ambiente seguro simulado — dados não são processados de verdade
+        </div>
+        <div class="form-group">
+          <label>Método de Pagamento</label>
+          <div style="display:flex;gap:10px;margin-top:4px">
+            <label v-for="m in [{v:'credit',l:'💳 Crédito'},{v:'debit',l:'🏦 Débito'},{v:'pix',l:'⚡ PIX'}]" :key="m.v"
+                   :style="`flex:1;display:flex;align-items:center;justify-content:center;gap:8px;padding:10px;border-radius:4px;cursor:pointer;border:1px solid ${checkoutPayment.method===m.v?'var(--accent)':'var(--border)'};background:${checkoutPayment.method===m.v?'rgba(255,60,0,.1)':'transparent'};font-size:13px;text-transform:none;color:var(--text)`">
+              <input type="radio" v-model="checkoutPayment.method" :value="m.v" style="display:none" />
+              {{m.l}}
+            </label>
+          </div>
+        </div>
+
+        <!-- Cartão -->
+        <div v-if="checkoutPayment.method!=='pix'">
+          <div class="form-group">
+            <label>Nome no Cartão</label>
+            <input type="text" v-model="checkoutPayment.cardName" placeholder="FULANO DA SILVA" style="text-transform:uppercase" />
+          </div>
+          <div class="form-group">
+            <label>Número do Cartão</label>
+            <input type="text" v-model="checkoutPayment.cardNumber" placeholder="0000 0000 0000 0000" maxlength="19" />
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Validade</label>
+              <input type="text" v-model="checkoutPayment.cardExpiry" placeholder="MM/AA" maxlength="5" />
+            </div>
+            <div class="form-group">
+              <label>CVV</label>
+              <input type="text" v-model="checkoutPayment.cardCvv" placeholder="123" maxlength="4" />
+            </div>
+          </div>
+        </div>
+
+        <!-- PIX -->
+        <div v-else style="text-align:center;padding:24px;background:var(--dark);border-radius:6px;border:1px solid var(--border)">
+          <div style="font-size:60px;margin-bottom:12px">📱</div>
+          <div style="font-family:var(--font-mono);font-size:13px;color:var(--sub);margin-bottom:8px">Chave PIX (simulada)</div>
+          <div style="font-family:var(--font-mono);color:var(--gold);font-size:15px">musicstore@pix.com.br</div>
+          <div style="font-size:13px;color:var(--sub);margin-top:12px">Valor: <strong style="color:var(--text)">R$ {{fmt(cart.total)}}</strong></div>
+          <div class="badge badge-green" style="margin-top:12px">Pagamento será confirmado automaticamente</div>
+        </div>
+      </div>
+
+      <!-- STEP 3: Processando -->
+      <div class="modal-body" v-else-if="checkoutStep===3" style="text-align:center;padding:48px 24px">
+        <div style="font-size:52px;margin-bottom:20px;animation:spin 1s linear infinite;display:inline-block">⚙️</div>
+        <div style="font-size:16px;font-weight:600;margin-bottom:8px">Processando seu pedido...</div>
+        <div style="color:var(--sub);font-size:14px">Confirmando {{checkoutPayment.method==='pix'?'PIX':'pagamento'}} e separando os produtos</div>
+      </div>
+
+      <!-- STEP 4: Sucesso -->
+      <div class="modal-body" v-else-if="checkoutStep===4" style="text-align:center;padding:40px 24px">
+        <div style="font-size:64px;margin-bottom:16px">🎸</div>
+        <div style="font-family:var(--font-display);font-size:28px;letter-spacing:.05em;color:var(--green);margin-bottom:8px">PEDIDO CONFIRMADO!</div>
+        <div style="color:var(--sub);margin-bottom:6px">Pedido <strong style="font-family:var(--font-mono);color:var(--text)">#{{lastOrderId}}</strong> realizado com sucesso</div>
+        <div style="color:var(--sub);font-size:13px;margin-bottom:28px">Você receberá atualizações sobre o status da entrega</div>
+        <div style="background:var(--dark);border:1px solid var(--border);border-radius:6px;padding:16px;margin-bottom:24px;text-align:left">
+          <div style="font-size:12px;color:var(--sub);margin-bottom:4px">ENDEREÇO DE ENTREGA</div>
+          <div style="font-size:14px">{{checkoutAddress}}</div>
+          <div style="font-size:12px;color:var(--sub);margin-top:12px;margin-bottom:4px">TOTAL PAGO</div>
+          <div style="font-family:var(--font-mono);color:var(--gold);font-size:18px">R$ {{fmt(cart.total||0)}}</div>
+        </div>
+        <button class="btn btn-primary btn-lg" style="width:100%" @click="finishCheckout">Ver meus pedidos →</button>
+      </div>
+
+      <div class="modal-footer" v-if="checkoutStep===1||checkoutStep===2">
+        <button class="btn btn-ghost" @click="checkoutStep===1?showCheckout=false:checkoutStep=1">
+          {{checkoutStep===1?'Cancelar':'← Voltar'}}
+        </button>
+        <button class="btn btn-primary" @click="checkoutNext">
+          {{checkoutStep===1?'Continuar →':'Confirmar Pagamento'}}
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ORDER DETAIL MODAL -->
+  <div class="modal-overlay" v-if="selectedOrder" @click.self="selectedOrder=null">
+    <div class="modal" style="max-width:600px">
+      <div class="modal-header">
+        <div class="modal-title">PEDIDO #{{selectedOrder.id}}</div>
+        <button class="modal-close" @click="selectedOrder=null">✕</button>
+      </div>
+      <div class="modal-body">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px">
+          <div><div style="font-size:12px;color:var(--sub)">Cliente</div><div>{{selectedOrder.customer_name}}</div></div>
+          <div><div style="font-size:12px;color:var(--sub)">Data</div><div>{{fmtDate(selectedOrder.created_at)}}</div></div>
+          <div><div style="font-size:12px;color:var(--sub)">Status</div><div :class="'status-'+selectedOrder.status">{{statusLabel(selectedOrder.status)}}</div></div>
+          <div><div style="font-size:12px;color:var(--sub)">Total</div><div style="font-family:var(--font-mono);color:var(--gold)">R$ {{fmt(selectedOrder.total)}}</div></div>
+        </div>
+        <div style="font-size:12px;color:var(--sub);margin-bottom:4px">Endereço de Entrega</div>
+        <div style="background:var(--dark);padding:10px 14px;border-radius:4px;font-size:14px;margin-bottom:20px">{{selectedOrder.shipping_address}}</div>
+        <div style="font-weight:600;margin-bottom:12px">Itens do Pedido</div>
+        <div v-for="item in selectedOrder.items" :key="item.id"
+             style="display:flex;align-items:center;gap:12px;padding:10px;background:var(--dark);border-radius:4px;margin-bottom:8px">
+          <img :src="item.image_url||'https://via.placeholder.com/50x50/1a1a1a/444'" style="width:50px;height:50px;object-fit:cover;border-radius:4px" />
+          <div style="flex:1">
+            <div style="font-weight:500">{{item.product_name}}</div>
+            <div style="font-size:13px;color:var(--sub)">{{item.quantity}}x R$ {{fmt(item.price)}}</div>
+          </div>
+          <div style="font-family:var(--font-mono);color:var(--gold)">R$ {{fmt(item.price*item.quantity)}}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PRODUCT FORM MODAL (ADMIN) -->
+  <div class="modal-overlay" v-if="showProductForm" @click.self="showProductForm=false">
+    <div class="modal" style="max-width:620px">
+      <div class="modal-header">
+        <div class="modal-title">{{productForm.id?'EDITAR':'NOVO'}} PRODUTO</div>
+        <button class="modal-close" @click="showProductForm=false">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="alert alert-error" v-if="productFormError" style="margin-bottom:16px">{{productFormError}}</div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Nome *</label>
+            <input type="text" v-model="productForm.name" placeholder="Nome do produto" />
+          </div>
+          <div class="form-group">
+            <label>Marca</label>
+            <input type="text" v-model="productForm.brand" placeholder="Fender, Gibson..." />
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Descrição</label>
+          <textarea v-model="productForm.description" rows="3" style="resize:vertical"></textarea>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Preço (R$) *</label>
+            <input type="number" v-model="productForm.price" min="0" step="0.01" />
+          </div>
+          <div class="form-group">
+            <label>Estoque</label>
+            <input type="number" v-model="productForm.stock" min="0" />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Categoria</label>
+            <select v-model="productForm.category_id">
+              <option value="">Sem categoria</option>
+              <option v-for="c in categories" :key="c.id" :value="c.id">{{c.name}}</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>SKU</label>
+            <input type="text" v-model="productForm.sku" placeholder="PROD-001" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label>URL da Imagem</label>
+          <input type="url" v-model="productForm.image_url" placeholder="https://..." />
+        </div>
+        <div style="display:flex;gap:20px;margin-top:8px">
+          <label style="display:flex;align-items:center;gap:8px;cursor:pointer;text-transform:none;font-size:14px">
+            <input type="checkbox" v-model="productForm.featured" style="width:auto" />
+            Produto em destaque
+          </label>
+          <label style="display:flex;align-items:center;gap:8px;cursor:pointer;text-transform:none;font-size:14px">
+            <input type="checkbox" v-model="productForm.active" style="width:auto" />
+            Produto ativo
+          </label>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-ghost" @click="showProductForm=false">Cancelar</button>
+        <button class="btn btn-primary" @click="saveProduct" :disabled="productSaving">
+          {{productSaving?'Salvando...':'Salvar Produto'}}
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- DELETE CONFIRM -->
+  <div class="modal-overlay" v-if="deleteTarget" @click.self="deleteTarget=null">
+    <div class="modal" style="max-width:400px">
+      <div class="modal-header"><div class="modal-title">CONFIRMAR EXCLUSÃO</div><button class="modal-close" @click="deleteTarget=null">✕</button></div>
+      <div class="modal-body">
+        <p>Tem certeza que deseja excluir <strong>{{deleteTarget.name}}</strong>? Esta ação não pode ser desfeita.</p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-ghost" @click="deleteTarget=null">Cancelar</button>
+        <button class="btn btn-danger" @click="doDelete">Excluir</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST CONTAINER -->
+  <div class="toast-container">
+    <div class="toast" :class="t.type" v-for="t in toasts" :key="t.id">{{t.msg}}</div>
+  </div>
+</div>
+
+<script>
+const { createApp, ref, reactive, computed, onMounted, watch } = Vue;
+
+// =========================================
+// API BASE URL
+// Prioridade:
+//   1. meta tag <meta name="api-base"> definida pelo servidor (Railway inject)
+//   2. Mesma origem quando o frontend está dentro de /frontend/
+//   3. Fallback local para XAMPP
+// =========================================
+const API = (() => {
+  // 1. Meta tag injetada pelo servidor/build
+  const meta = document.querySelector('meta[name="api-base"]');
+  if (meta && meta.content) return meta.content.replace(/\/$/, '');
+
+  // 2. Quando servido pelo Railway em outro domínio via env injetada no HTML
+  if (window.__MUSICSTORE_API__) return window.__MUSICSTORE_API__.replace(/\/$/, '');
+
+  const { origin, pathname, protocol } = window.location;
+
+  // 3. XAMPP / local com /frontend/ no path
+  if (protocol.startsWith('http') && pathname.includes('/frontend/')) {
+    const base = pathname.split('/frontend/')[0];
+    return `${origin}${base}/backend/api`;
+  }
+
+  // 4. Fallback local padrão
+  return 'http://localhost/musicstore/backend/api';
+})();
+
+const app = createApp({
+  setup() {
+    // ===== STATE =====
+    const page      = ref('home');
+    const user      = ref(null);
+    const token     = ref(localStorage.getItem('ms_token') || '');
+
+    // Products
+    const products   = ref([]);
+    const categories = ref([]);
+    const shopSearch = ref('');
+    const shopCategory = ref('');
+
+    // Cart
+    const cart     = reactive({ items: [], total: 0, count: 0 });
+    const cartOpen = ref(false);
+
+    // Auth
+    const loginForm  = reactive({ email: '', password: '' });
+    const regForm    = reactive({ name: '', email: '', password: '', phone: '' });
+    const authError  = ref('');
+    const authLoading = ref(false);
+
+    // Orders
+    const myOrders   = ref([]);
+    const allOrders  = ref([]);
+    const selectedOrder = ref(null);
+
+    // Checkout
+    const showCheckout    = ref(false);
+    const checkoutStep    = ref(1); // 1=endereço, 2=pagamento, 3=processando, 4=confirmado
+    const checkoutAddress = ref('');
+    const checkoutNotes   = ref('');
+    const checkoutPayment = reactive({ method: 'credit', cardName: '', cardNumber: '', cardExpiry: '', cardCvv: '' });
+    const orderLoading    = ref(false);
+    const lastOrderId     = ref(null);
+
+    // Product detail
+    const selectedProduct = ref(null);
+
+    // Admin
+    const adminTab    = ref('dashboard');
+    const stats       = reactive({ revenue: 0, orders: 0, products: 0, customers: 0, low_stock: 0, recent_orders: [], top_products: [], orders_by_status: [] });
+    const adminMenu   = [
+      { key: 'dashboard', icon: '📊', label: 'Dashboard' },
+      { key: 'products',  icon: '🎸', label: 'Produtos' },
+      { key: 'orders',    icon: '📦', label: 'Pedidos' },
+    ];
+    const adminProductSearch = ref('');
+    const showProductForm = ref(false);
+    const productFormError = ref('');
+    const productSaving = ref(false);
+    const productForm = reactive({ id: null, name: '', description: '', price: '', stock: 0, category_id: '', image_url: '', brand: '', sku: '', featured: false, active: true });
+    const deleteTarget = ref(null);
+
+    // Toasts
+    const toasts = ref([]);
+
+    // ===== COMPUTED =====
+    const featuredProducts = computed(() => products.value.filter(p => p.featured).slice(0, 6));
+
+    const filteredProducts = computed(() => {
+      let list = products.value;
+      if (shopCategory.value) list = list.filter(p => p.category_slug === shopCategory.value);
+      if (shopSearch.value)   list = list.filter(p =>
+        p.name.toLowerCase().includes(shopSearch.value.toLowerCase()) ||
+        (p.brand||'').toLowerCase().includes(shopSearch.value.toLowerCase()));
+      return list;
+    });
+
+    const cartCount = computed(() => cart.count || 0);
+
+    const adminFilteredProducts = computed(() => {
+      const all = products.value;
+      const s = adminProductSearch.value.toLowerCase();
+      if (!s) return all;
+      return all.filter(p => p.name.toLowerCase().includes(s) || (p.brand||'').toLowerCase().includes(s) || (p.sku||'').toLowerCase().includes(s));
+    });
+
+    // ===== HELPERS =====
+    const fmt  = v => Number(v).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    const fmtK = v => v >= 1000 ? (v/1000).toFixed(1) + 'k' : fmt(v);
+    const fmtDate = d => new Date(d).toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric' });
+    const statusLabel = s => ({ pending: 'Pendente', processing: 'Processando', shipped: 'Enviado', delivered: 'Entregue', cancelled: 'Cancelado' }[s] || s);
+
+    const toast = (msg, type = 'info') => {
+      const id = Date.now();
+      toasts.value.push({ id, msg, type });
+      setTimeout(() => { toasts.value = toasts.value.filter(t => t.id !== id); }, 3500);
+    };
+
+    const headers = () => ({
+      'Content-Type': 'application/json',
+      ...(token.value ? {
+        Authorization: `Bearer ${token.value}`,
+        'X-Auth-Token': token.value,
+      } : {})
+    });
+
+    const api = async (endpoint, method = 'GET', body = null) => {
+      const opts = { method, headers: headers() };
+      if (body) opts.body = JSON.stringify(body);
+      const res = await fetch(`${API}/${endpoint}`, opts);
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Erro desconhecido');
+      return data;
+    };
+
+    // ===== NAV =====
+    const go = async (p) => {
+      page.value = p;
+      authError.value = '';
+      if (p === 'shop') await loadProducts();
+      if (p === 'home') await loadProducts();
+      if (p === 'orders' && user.value) await loadMyOrders();
+      if (p === 'admin' && user.value?.role === 'admin') {
+        await Promise.all([loadProducts(true), loadStats(), loadAllOrders()]);
+      }
+    };
+
+    // ===== PRODUCTS =====
+    const loadProducts = async (adminAll = false) => {
+      try {
+        const ep = adminAll ? 'products.php?all=1' : 'products.php';
+        products.value = await api(ep);
+      } catch(e) { console.error(e); }
+    };
+
+    const loadCategories = async () => {
+      try { categories.value = await api('categories.php'); } catch(e) {}
+    };
+
+    const openProduct = (p) => { selectedProduct.value = p; };
+
+    // ===== AUTH =====
+    const doLogin = async () => {
+      authLoading.value = true; authError.value = '';
+      try {
+        const data = await api('auth.php?action=login', 'POST', loginForm);
+        token.value = data.token;
+        user.value  = data.user;
+        localStorage.setItem('ms_token', data.token);
+        loginForm.email = loginForm.password = '';
+        toast('Bem-vindo(a), ' + data.user.name + '!', 'success');
+        await loadCart();
+        go(data.user.role === 'admin' ? 'admin' : 'shop');
+      } catch(e) { authError.value = e.message; }
+      finally { authLoading.value = false; }
+    };
+
+    const doRegister = async () => {
+      authLoading.value = true; authError.value = '';
+      try {
+        const data = await api('auth.php?action=register', 'POST', regForm);
+        token.value = data.token;
+        user.value  = data.user;
+        localStorage.setItem('ms_token', data.token);
+        regForm.name = regForm.email = regForm.password = regForm.phone = '';
+        toast('Conta criada! Bem-vindo(a)!', 'success');
+        await loadCart();
+        go('shop');
+      } catch(e) { authError.value = e.message; }
+      finally { authLoading.value = false; }
+    };
+
+    const logout = () => {
+      user.value = null; token.value = '';
+      localStorage.removeItem('ms_token');
+      cart.items = []; cart.total = 0; cart.count = 0;
+      toast('Sessão encerrada.', 'info');
+      go('home');
+    };
+
+    const restoreSession = async () => {
+      if (!token.value) return;
+      try {
+        user.value = await api('auth.php?action=me');
+        await loadCart();
+      } catch(e) { token.value = ''; localStorage.removeItem('ms_token'); }
+    };
+
+    // ===== CART =====
+    const loadCart = async () => {
+      if (!user.value) return;
+      try {
+        const data = await api('cart.php');
+        cart.items = data.items || [];
+        cart.total = data.total || 0;
+        cart.count = data.count || 0;
+      } catch(e) {}
+    };
+
+    const addToCart = async (product) => {
+      if (!user.value) { go('login'); toast('Faça login para adicionar ao carrinho', 'info'); return; }
+      try {
+        await api('cart.php?action=add', 'POST', { product_id: product.id, quantity: 1 });
+        await loadCart();
+        toast(product.name + ' adicionado ao carrinho!', 'success');
+        cartOpen.value = true;
+      } catch(e) { toast(e.message, 'error'); }
+    };
+
+    const updateQty = async (item, qty) => {
+      try {
+        await api('cart.php?action=update', 'PUT', { product_id: item.product_id, quantity: qty });
+        await loadCart();
+      } catch(e) { toast(e.message, 'error'); }
+    };
+
+    const removeFromCart = async (item) => {
+      try {
+        await api(`cart.php?action=remove&product_id=${item.product_id}`, 'DELETE');
+        await loadCart();
+        toast('Item removido.', 'info');
+      } catch(e) { toast(e.message, 'error'); }
+    };
+
+    const clearCart = async () => {
+      try {
+        await api('cart.php?action=clear', 'DELETE');
+        await loadCart();
+        toast('Carrinho limpo.', 'info');
+      } catch(e) {}
+    };
+
+    // ===== ORDERS =====
+    const loadMyOrders = async () => {
+      try { myOrders.value = await api('orders.php'); } catch(e) {}
+    };
+
+    const loadAllOrders = async () => {
+      try { allOrders.value = await api('orders.php'); } catch(e) {}
+    };
+
+    const viewOrder = async (id) => {
+      try {
+        selectedOrder.value = await api(`orders.php?id=${id}`);
+      } catch(e) { toast(e.message, 'error'); }
+    };
+
+    const openCheckout = () => {
+      checkoutStep.value = 1;
+      checkoutAddress.value = '';
+      checkoutNotes.value = '';
+      checkoutPayment.method = 'credit';
+      checkoutPayment.cardName = checkoutPayment.cardNumber = checkoutPayment.cardExpiry = checkoutPayment.cardCvv = '';
+      lastOrderId.value = null;
+      cartOpen.value = false;
+      showCheckout.value = true;
+    };
+
+    const checkoutNext = () => {
+      if (checkoutStep.value === 1) {
+        if (!checkoutAddress.value.trim()) { toast('Informe o endereço de entrega.', 'error'); return; }
+        checkoutStep.value = 2;
+      } else if (checkoutStep.value === 2) {
+        if (checkoutPayment.method === 'credit') {
+          if (!checkoutPayment.cardName || !checkoutPayment.cardNumber || !checkoutPayment.cardExpiry || !checkoutPayment.cardCvv) {
+            toast('Preencha todos os dados do cartão.', 'error'); return;
+          }
+        }
+        placeOrder();
+      }
+    };
+
+    const placeOrder = async () => {
+      checkoutStep.value = 3; // processando
+      orderLoading.value = true;
+      // Simula delay de pagamento (1.8s)
+      await new Promise(r => setTimeout(r, 1800));
+      try {
+        const data = await api('orders.php', 'POST', { shipping_address: checkoutAddress.value, notes: checkoutNotes.value });
+        await loadCart();
+        lastOrderId.value = data.order_id;
+        checkoutStep.value = 4; // sucesso
+      } catch(e) {
+        toast(e.message, 'error');
+        checkoutStep.value = 2;
+      }
+      finally { orderLoading.value = false; }
+    };
+
+    const finishCheckout = async () => {
+      showCheckout.value = false;
+      toast('Pedido #' + lastOrderId.value + ' confirmado! 🎸', 'success');
+      go('orders');
+    };
+
+    const changeOrderStatus = async (id, status) => {
+      try {
+        await api(`orders.php?id=${id}`, 'PUT', { status });
+        await loadAllOrders();
+        toast('Status atualizado.', 'success');
+      } catch(e) { toast(e.message, 'error'); }
+    };
+
+    // ===== ADMIN =====
+    const loadStats = async () => {
+      try {
+        const data = await api('admin_stats.php');
+        Object.assign(stats, data);
+      } catch(e) {}
+    };
+
+    const openProductForm = (p) => {
+      productFormError.value = '';
+      if (p) {
+        Object.assign(productForm, { id: p.id, name: p.name, description: p.description||'', price: p.price, stock: p.stock, category_id: p.category_id||'', image_url: p.image_url||'', brand: p.brand||'', sku: p.sku||'', featured: p.featured, active: p.active });
+      } else {
+        Object.assign(productForm, { id: null, name: '', description: '', price: '', stock: 0, category_id: '', image_url: '', brand: '', sku: '', featured: false, active: true });
+      }
+      showProductForm.value = true;
+    };
+
+    const saveProduct = async () => {
+      productFormError.value = '';
+      if (!productForm.name || !productForm.price) { productFormError.value = 'Nome e preço são obrigatórios.'; return; }
+      productSaving.value = true;
+      try {
+        if (productForm.id) {
+          await api(`products.php?id=${productForm.id}`, 'PUT', productForm);
+          toast('Produto atualizado!', 'success');
+        } else {
+          await api('products.php', 'POST', productForm);
+          toast('Produto criado!', 'success');
+        }
+        showProductForm.value = false;
+        await loadProducts(true);
+      } catch(e) { productFormError.value = e.message; }
+      finally { productSaving.value = false; }
+    };
+
+    const confirmDelete = (p) => { deleteTarget.value = p; };
+
+    const doDelete = async () => {
+      try {
+        await api(`products.php?id=${deleteTarget.value.id}`, 'DELETE');
+        toast('Produto excluído.', 'info');
+        deleteTarget.value = null;
+        await loadProducts(true);
+      } catch(e) { toast(e.message, 'error'); }
+    };
+
+    // ===== INIT =====
+    onMounted(async () => {
+      // Restaurar sessão PRIMEIRO para ter o token antes de qualquer ação do usuário
+      await restoreSession();
+      await Promise.all([loadCategories(), loadProducts()]);
+    });
+
+    return {
+      page, user, token,
+      products, categories, shopSearch, shopCategory, filteredProducts, featuredProducts,
+      cart, cartOpen, cartCount,
+      loginForm, regForm, authError, authLoading,
+      myOrders, allOrders, selectedOrder,
+      showCheckout, checkoutStep, checkoutAddress, checkoutNotes, checkoutPayment, orderLoading, lastOrderId,
+      selectedProduct,
+      adminTab, adminMenu, stats,
+      adminProductSearch, adminFilteredProducts,
+      showProductForm, productForm, productFormError, productSaving,
+      deleteTarget,
+      toasts,
+      // methods
+      go, fmt, fmtK, fmtDate, statusLabel,
+      doLogin, doRegister, logout,
+      addToCart, updateQty, removeFromCart, clearCart,
+      loadMyOrders, viewOrder, openCheckout, checkoutNext, placeOrder, finishCheckout, changeOrderStatus,
+      openProduct, openProductForm, saveProduct, confirmDelete, doDelete,
+    };
+  }
+});
+app.mount('#app');
+</script>
+</body>
+</html>
