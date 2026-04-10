@@ -11,6 +11,8 @@ $userId = (int)$user['id'];
 $method = $_SERVER['REQUEST_METHOD'];
 $action = $_GET['action'] ?? '';
 
+ensureCartTableExists();
+
 match (true) {
     $method === 'GET'    => getCart($userId),
     $method === 'POST'   && $action === 'add'    => addItem($userId),
@@ -96,4 +98,23 @@ function clearCart(int $userId): void {
     $stmt = getDB()->prepare('DELETE FROM cart_items WHERE user_id = ?');
     $stmt->execute([$userId]);
     jsonResponse(['message' => 'Carrinho limpo.']);
+}
+
+function ensureCartTableExists(): void {
+    static $checked = false;
+    if ($checked) return;
+
+    $db = getDB();
+    $db->exec("CREATE TABLE IF NOT EXISTS cart_items (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        user_id INT NOT NULL,
+        product_id INT NOT NULL,
+        quantity INT NOT NULL DEFAULT 1,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        UNIQUE KEY unique_cart_item (user_id, product_id),
+        FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+        FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE
+    )");
+
+    $checked = true;
 }
