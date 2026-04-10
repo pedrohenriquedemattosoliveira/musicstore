@@ -1404,8 +1404,31 @@ const app = createApp({
       const opts = { method, headers: headers() };
       if (body) opts.body = JSON.stringify(body);
       const res = await fetch(`${API}/${endpoint}`, opts);
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || 'Erro desconhecido');
+
+      const contentType = (res.headers.get('content-type') || '').toLowerCase();
+      const raw = await res.text();
+
+      let data = null;
+      if (raw) {
+        if (contentType.includes('application/json')) {
+          try {
+            data = JSON.parse(raw);
+          } catch {
+            throw new Error('Resposta JSON inválida do servidor.');
+          }
+        } else {
+          try {
+            data = JSON.parse(raw);
+          } catch {
+            data = { error: raw.slice(0, 180) };
+          }
+        }
+      }
+
+      if (!res.ok) {
+        throw new Error(data?.error || `Erro ${res.status} ao acessar a API.`);
+      }
+
       return data;
     };
 
