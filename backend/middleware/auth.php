@@ -1,11 +1,11 @@
-﻿<?php
+<?php
 // ============================================
-// MUSICSTORE - Autenticacao
+// MUSICSTORE - JWT & Auth Middleware
 // ============================================
 
 require_once __DIR__ . '/../config/database.php';
 
-// Configura cabecalhos de resposta
+// Headers CORS e JSON
 function setCorsHeaders(): void {
     header('Access-Control-Allow-Origin: *');
     header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
@@ -17,7 +17,7 @@ function setCorsHeaders(): void {
     }
 }
 
-// Token de acesso (JWT)
+// JWT simples sem biblioteca externa
 function base64UrlEncode(string $data): string {
     return rtrim(strtr(base64_encode($data), '+/', '-_'), '=');
 }
@@ -52,7 +52,7 @@ function getAuthUser(): ?array {
         ?? $_SERVER['Authorization']
         ?? '';
 
-    // Alguns ambientes (Apache/FastCGI) sÃ³ expÃµem Authorization via getallheaders().
+    // Alguns ambientes (Apache/FastCGI) só expõem Authorization via getallheaders().
     if (!$auth && function_exists('getallheaders')) {
         $headers = getallheaders();
         $auth = $headers['Authorization'] ?? $headers['authorization'] ?? '';
@@ -70,7 +70,7 @@ function getAuthUser(): ?array {
         if (preg_match('/^Bearer\s+(.+)$/i', $auth, $matches)) {
             $token = trim($matches[1]);
         } else {
-            // Aceita token mesmo sem o prefixo Bearer.
+            // Fallback: permite receber o token cru sem prefixo Bearer.
             $token = $auth;
         }
     }
@@ -95,7 +95,7 @@ function requireAuth(): array {
     $user = getAuthUser();
     if (!$user) {
         http_response_code(401);
-        die(json_encode(['error' => 'NÃ£o autorizado. FaÃ§a login.']));
+        die(json_encode(['error' => 'Não autorizado. Faça login.']));
     }
     return $user;
 
@@ -129,4 +129,3 @@ function getBody(): array {
     $raw = file_get_contents('php://input');
     return json_decode($raw, true) ?? [];
 }
-

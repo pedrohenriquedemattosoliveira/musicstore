@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8" />
@@ -6,12 +6,15 @@
 
 
 <meta name="api-base" content="https://musicstore-production-5765.up.railway.app/api">
-<title>MusicStore â€” Sua loja de instrumentos</title>
+<title>MusicStore — Sua loja de instrumentos</title>
 <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
-
+/* ============================================
+   MUSICSTORE - Design System
+   Tema: Industrial / Rock / Bold
+============================================ */
 :root {
   --black:   #0a0a0a;
   --dark:    #111111;
@@ -59,11 +62,11 @@ input, textarea, select {
 input:focus, textarea:focus, select:focus { border-color: var(--accent); }
 label { display: block; font-size: 12px; color: var(--sub); margin-bottom: 5px; text-transform: uppercase; letter-spacing: .05em; }
 
-/* ===== ESTRUTURA ===== */
+/* ===== LAYOUT ===== */
 #app { min-height: 100vh; display: flex; flex-direction: column; }
 .page { flex: 1; }
 
-/* ===== MENU SUPERIOR ===== */
+/* ===== NAVBAR ===== */
 .navbar {
   position: sticky; top: 0; z-index: 1000;
   background: rgba(10,10,10,.95);
@@ -121,7 +124,7 @@ label { display: block; font-size: 12px; color: var(--sub); margin-bottom: 5px; 
 }
 .btn-logout:hover { border-color: var(--red); color: var(--red); }
 
-/* ===== BOTOES ===== */
+/* ===== BUTTONS ===== */
 .btn {
   display: inline-flex; align-items: center; justify-content: center; gap: 8px;
   padding: 11px 22px; border-radius: var(--radius);
@@ -142,7 +145,7 @@ label { display: block; font-size: 12px; color: var(--sub); margin-bottom: 5px; 
 .btn-lg { padding: 15px 32px; font-size: 16px; }
 .btn:disabled { opacity: .4; cursor: not-allowed; transform: none !important; }
 
-/* ===== CARTOES ===== */
+/* ===== CARDS ===== */
 .card {
   background: var(--panel);
   border: 1px solid var(--border);
@@ -150,7 +153,7 @@ label { display: block; font-size: 12px; color: var(--sub); margin-bottom: 5px; 
   overflow: hidden;
 }
 
-/* ===== ETIQUETAS ===== */
+/* ===== BADGE ===== */
 .badge {
   display: inline-block; padding: 3px 9px;
   border-radius: 100px; font-size: 11px; font-weight: 700;
@@ -162,12 +165,12 @@ label { display: block; font-size: 12px; color: var(--sub); margin-bottom: 5px; 
 .badge-gold    { background: rgba(245,197,24,.15); color: var(--gold); }
 .badge-muted   { background: var(--border); color: var(--sub); }
 
-/* ===== FORMULARIOS ===== */
+/* ===== FORMS ===== */
 .form-group { margin-bottom: 18px; }
 .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
 .form-error { color: var(--red); font-size: 13px; margin-top: 4px; }
 
-/* ===== ALERTAS ===== */
+/* ===== ALERTS ===== */
 .alert {
   padding: 12px 16px; border-radius: var(--radius);
   font-size: 14px; display: flex; align-items: center; gap: 8px;
@@ -176,7 +179,7 @@ label { display: block; font-size: 12px; color: var(--sub); margin-bottom: 5px; 
 .alert-success { background: rgba(0,200,150,.1); border: 1px solid rgba(0,200,150,.3); color: var(--green); }
 .alert-info    { background: rgba(255,122,0,.1); border: 1px solid rgba(255,122,0,.3); color: var(--accent2); }
 
-/* ===== JANELA MODAL ===== */
+/* ===== MODAL ===== */
 .modal-overlay {
   position: fixed; inset: 0; z-index: 2000;
   background: rgba(0,0,0,.8);
@@ -211,7 +214,7 @@ label { display: block; font-size: 12px; color: var(--sub); margin-bottom: 5px; 
   display: flex; justify-content: flex-end; gap: 10px;
 }
 
-/* ===== TITULOS DAS SECOES ===== */
+/* ===== SECTION HEADERS ===== */
 .section-title {
   font-family: var(--font-display);
   font-size: 42px; letter-spacing: .04em;
@@ -219,14 +222,14 @@ label { display: block; font-size: 12px; color: var(--sub); margin-bottom: 5px; 
 }
 .section-sub { color: var(--sub); margin-top: 6px; }
 
-/* ===== GRADE ===== */
+/* ===== GRID ===== */
 .products-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
   gap: 20px;
 }
 
-/* ===== CARTAO DE PRODUTO ===== */
+/* ===== PRODUCT CARD ===== */
 .product-card {
   background: var(--panel);
   border: 1px solid var(--border);
@@ -255,7 +258,7 @@ label { display: block; font-size: 12px; color: var(--sub); margin-bottom: 5px; 
 .product-card-footer { padding: 12px 16px; border-top: 1px solid var(--border); display: flex; gap: 8px; }
 .stock-low { color: var(--red); font-size: 12px; margin-top: 4px; }
 
-/* ===== TABELA ===== */
+/* ===== TABLE ===== */
 .table { width: 100%; border-collapse: collapse; }
 .table th {
   text-align: left; padding: 12px 16px;
@@ -268,7 +271,7 @@ label { display: block; font-size: 12px; color: var(--sub); margin-bottom: 5px; 
 .table tr:hover td { background: rgba(255,255,255,.02); }
 .table-wrap { overflow-x: auto; }
 
-/* ===== ABAS ===== */
+/* ===== TABS ===== */
 .tabs { display: flex; gap: 2px; border-bottom: 1px solid var(--border); margin-bottom: 24px; }
 .tab-btn {
   background: none; border: none; color: var(--sub);
@@ -279,7 +282,7 @@ label { display: block; font-size: 12px; color: var(--sub); margin-bottom: 5px; 
 .tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
 .tab-btn:hover:not(.active) { color: var(--text); }
 
-/* ===== CARTOES DE INDICADORES ===== */
+/* ===== STAT CARDS ===== */
 .stat-card {
   background: var(--panel);
   border: 1px solid var(--border);
@@ -291,7 +294,7 @@ label { display: block; font-size: 12px; color: var(--sub); margin-bottom: 5px; 
 .stat-icon { font-size: 28px; }
 .stats-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 16px; }
 
-/* ===== PAGINA INICIAL ===== */
+/* ===== LANDING ===== */
 .hero {
   min-height: 80vh;
   display: flex; align-items: center; justify-content: center;
@@ -337,7 +340,7 @@ label { display: block; font-size: 12px; color: var(--sub); margin-bottom: 5px; 
 .feature-label { font-size: 13px; font-weight: 600; }
 .feature-sub { font-size: 12px; color: var(--sub); }
 
-/* ===== RODAPE ===== */
+/* ===== FOOTER ===== */
 footer {
   background: var(--dark);
   border-top: 1px solid var(--border);
@@ -346,7 +349,7 @@ footer {
   color: var(--sub); font-size: 13px;
 }
 
-/* ===== CARRINHO LATERAL ===== */
+/* ===== SIDEBAR CART ===== */
 .cart-sidebar {
   position: fixed; right: 0; top: 0; bottom: 0;
   width: 380px; max-width: 100vw;
@@ -395,18 +398,18 @@ footer {
 .cart-total-row { display: flex; justify-content: space-between; font-size: 18px; font-weight: 700; margin-bottom: 16px; }
 .cart-total-val { font-family: var(--font-mono); color: var(--gold); }
 
-/* ===== CORES DE STATUS ===== */
+/* ===== STATUS COLORS ===== */
 .status-pending    { color: var(--gold); }
 .status-processing { color: var(--accent2); }
 .status-shipped    { color: #4fc3f7; }
 .status-delivered  { color: var(--green); }
 .status-cancelled  { color: var(--red); }
 
-/* ===== SECOES DA PAGINA ===== */
+/* ===== PAGE SECTIONS ===== */
 .container { max-width: 1200px; margin: 0 auto; padding: 0 32px; }
 .section { padding: 60px 0; }
 
-/* ===== PAGINA DE ACESSO ===== */
+/* ===== AUTH PAGE ===== */
 .auth-page {
   min-height: calc(100vh - 64px);
   display: flex; align-items: center; justify-content: center;
@@ -427,7 +430,7 @@ footer {
 .auth-switch { text-align: center; margin-top: 20px; font-size: 14px; color: var(--sub); }
 .auth-switch a { color: var(--accent); font-weight: 600; cursor: pointer; }
 
-/* ===== MENU LATERAL ADMIN ===== */
+/* ===== ADMIN SIDEBAR ===== */
 .admin-layout { display: flex; min-height: calc(100vh - 64px); }
 .admin-sidebar {
   width: 220px; flex-shrink: 0;
@@ -447,7 +450,7 @@ footer {
 .admin-content { flex: 1; padding: 32px; overflow-x: hidden; }
 .admin-page-title { font-family: var(--font-display); font-size: 34px; letter-spacing: .05em; margin-bottom: 24px; }
 
-/* ===== BARRA DE BUSCA ===== */
+/* ===== SEARCH BAR ===== */
 .search-bar {
   display: flex; gap: 10px;
   background: var(--panel);
@@ -462,13 +465,13 @@ footer {
 }
 .search-bar input:focus { border: none; }
 
-/* ===== ANIMACOES ===== */
+/* ===== ANIMATIONS ===== */
 @keyframes spin { from { transform: rotate(0deg) } to { transform: rotate(360deg) } }
 @keyframes slideUp { from { opacity: 0; transform: translateY(16px) } to { opacity: 1; transform: none } }
 .fade-enter-active, .fade-leave-active { transition: opacity .15s; }
 .fade-enter-from, .fade-leave-to { opacity: 0; }
 
-/* ===== NOTIFICACOES ===== */
+/* ===== TOAST ===== */
 .toast-container { position: fixed; bottom: 24px; right: 24px; z-index: 3000; display: flex; flex-direction: column; gap: 10px; }
 .toast {
   background: var(--panel); border: 1px solid var(--border);
@@ -481,17 +484,17 @@ footer {
 .toast.error   { border-left: 3px solid var(--red); }
 .toast.info    { border-left: 3px solid var(--accent); }
 
-/* ===== DETALHE DO PRODUTO ===== */
+/* ===== PRODUCT DETAIL ===== */
 .product-detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: start; }
 .product-detail-img { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 6px; background: var(--panel); }
 .product-detail-price { font-family: var(--font-mono); font-size: 36px; color: var(--gold); }
 
-/* ===== TELA VAZIA ===== */
+/* ===== EMPTY STATE ===== */
 .empty-state { text-align: center; padding: 80px 20px; }
 .empty-icon { font-size: 60px; margin-bottom: 16px; opacity: .4; }
 .empty-title { font-family: var(--font-display); font-size: 28px; letter-spacing: .04em; color: var(--sub); }
 
-/* ===== RESPONSIVO ===== */
+/* ===== RESPONSIVE ===== */
 @media (max-width: 768px) {
   .navbar { padding: 0 16px; }
   .container { padding: 0 16px; }
@@ -507,17 +510,17 @@ footer {
 </head>
 <body>
 <div id="app">
-  <!-- MENU SUPERIOR -->
+  <!-- NAVBAR -->
   <nav class="navbar">
     <div class="navbar-logo" @click="go('home')">MUSIC<span>STORE</span></div>
     <div class="navbar-menu">
-      <button class="nav-btn" :class="{active: page==='home'}" @click="go('home')">InÃ­cio</button>
+      <button class="nav-btn" :class="{active: page==='home'}" @click="go('home')">Início</button>
       <button class="nav-btn" :class="{active: page==='shop'}" @click="go('shop')">Loja</button>
       <template v-if="user">
         <button class="nav-btn" :class="{active: page==='orders'}" @click="go('orders')" v-if="user.role==='customer'">Meus Pedidos</button>
         <button class="nav-btn" :class="{active: page==='admin'}" @click="go('admin')" v-if="user.role==='admin'">Admin</button>
         <button class="nav-btn cart-btn" @click="cartOpen=true">
-          ðŸ›’ Carrinho
+          🛒 Carrinho
           <span class="cart-badge" v-if="cartCount>0">{{cartCount}}</span>
         </button>
         <div class="nav-user">
@@ -532,10 +535,10 @@ footer {
     </div>
   </nav>
 
-  <!-- PAGINAS -->
+  <!-- PAGES -->
   <div class="page">
     <transition name="fade" mode="out-in">
-      <!-- INICIO -->
+      <!-- HOME -->
       <div v-if="page==='home'" key="home">
         <section class="hero">
           <div class="hero-content">
@@ -544,42 +547,42 @@ footer {
             <p class="hero-sub">Os melhores instrumentos das marcas mais reconhecidas do mundo. Guitarra, baixo, bateria, teclado e muito mais.</p>
             <div class="hero-btns">
               <button class="btn btn-primary btn-lg" @click="go('shop')">Explorar Loja</button>
-              <button class="btn btn-ghost btn-lg" @click="go('login')" v-if="!user">Criar conta grÃ¡tis</button>
+              <button class="btn btn-ghost btn-lg" @click="go('login')" v-if="!user">Criar conta grátis</button>
             </div>
           </div>
         </section>
 
         <div class="features-strip">
           <div class="feature-item">
-            <div class="feature-icon">ðŸŽ¸</div>
+            <div class="feature-icon">🎸</div>
             <div class="feature-label">+500 Produtos</div>
             <div class="feature-sub">Linha completa de instrumentos</div>
           </div>
           <div class="feature-item">
-            <div class="feature-icon">ðŸšš</div>
-            <div class="feature-label">Frete GrÃ¡tis</div>
+            <div class="feature-icon">🚚</div>
+            <div class="feature-label">Frete Grátis</div>
             <div class="feature-sub">Para compras acima de R$ 500</div>
           </div>
           <div class="feature-item">
-            <div class="feature-icon">ðŸ†</div>
+            <div class="feature-icon">🏆</div>
             <div class="feature-label">Garantia</div>
             <div class="feature-sub">12 meses de garantia</div>
           </div>
           <div class="feature-item">
-            <div class="feature-icon">ðŸ’³</div>
+            <div class="feature-icon">💳</div>
             <div class="feature-label">Parcelamento</div>
-            <div class="feature-sub">Em atÃ© 12x sem juros</div>
+            <div class="feature-sub">Em até 12x sem juros</div>
           </div>
         </div>
 
-        <!-- PRODUTOS EM DESTAQUE -->
+        <!-- FEATURED PRODUCTS -->
         <div class="container section">
           <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:32px">
             <div>
               <div class="section-title">EM DESTAQUE</div>
               <div class="section-sub">Os mais procurados da semana</div>
             </div>
-            <button class="btn btn-ghost btn-sm" @click="go('shop')">Ver todos â†’</button>
+            <button class="btn btn-ghost btn-sm" @click="go('shop')">Ver todos →</button>
           </div>
           <div class="products-grid" v-if="featuredProducts.length">
             <div class="product-card" v-for="p in featuredProducts" :key="p.id">
@@ -588,7 +591,7 @@ footer {
                 <div class="product-brand">{{p.brand}}</div>
                 <div class="product-name">{{p.name}}</div>
                 <div class="product-price">R$ {{fmt(p.price)}}</div>
-                <div class="stock-low" v-if="p.stock<=3&&p.stock>0">âš  Apenas {{p.stock}} em estoque</div>
+                <div class="stock-low" v-if="p.stock<=3&&p.stock>0">⚠ Apenas {{p.stock}} em estoque</div>
               </div>
               <div class="product-card-footer">
                 <button class="btn btn-secondary btn-sm" style="flex:1" @click="openProduct(p)">Ver mais</button>
@@ -599,13 +602,13 @@ footer {
             </div>
           </div>
           <div v-else class="empty-state">
-            <div class="empty-icon">ðŸŽµ</div>
+            <div class="empty-icon">🎵</div>
             <div class="empty-title">Carregando produtos...</div>
           </div>
         </div>
       </div>
 
-      <!-- LOJA -->
+      <!-- SHOP -->
       <div v-else-if="page==='shop'" key="shop">
         <div class="container section">
           <div style="display:flex;align-items:baseline;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:32px">
@@ -615,7 +618,7 @@ footer {
             </div>
             <div style="display:flex;gap:10px;flex-wrap:wrap">
               <div class="search-bar" style="width:240px">
-                <span style="color:var(--sub)">ðŸ”</span>
+                <span style="color:var(--sub)">🔍</span>
                 <input type="text" v-model="shopSearch" placeholder="Buscar produtos..." />
               </div>
               <select v-model="shopCategory" style="width:auto">
@@ -625,7 +628,7 @@ footer {
             </div>
           </div>
 
-          <!-- FILTROS DE CATEGORIA -->
+          <!-- CATEGORY PILLS -->
           <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:28px">
             <button class="btn btn-sm" :class="shopCategory===''?'btn-primary':'btn-ghost'" @click="shopCategory=''">Tudo</button>
             <button class="btn btn-sm" v-for="c in categories" :key="c.id"
@@ -643,8 +646,8 @@ footer {
                 </div>
                 <div class="product-name">{{p.name}}</div>
                 <div class="product-price">R$ {{fmt(p.price)}}</div>
-                <div class="stock-low" v-if="p.stock<=3&&p.stock>0">âš  Apenas {{p.stock}} em estoque</div>
-                <div class="stock-low" v-if="p.stock===0">âŒ Sem estoque</div>
+                <div class="stock-low" v-if="p.stock<=3&&p.stock>0">⚠ Apenas {{p.stock}} em estoque</div>
+                <div class="stock-low" v-if="p.stock===0">❌ Sem estoque</div>
               </div>
               <div class="product-card-footer">
                 <button class="btn btn-secondary btn-sm" style="flex:1" @click="openProduct(p)">Detalhes</button>
@@ -653,13 +656,13 @@ footer {
             </div>
           </div>
           <div v-else class="empty-state">
-            <div class="empty-icon">ðŸ”</div>
+            <div class="empty-icon">🔍</div>
             <div class="empty-title">Nenhum produto encontrado</div>
           </div>
         </div>
       </div>
 
-      <!-- ENTRAR -->
+      <!-- LOGIN -->
       <div v-else-if="page==='login'" key="login" class="auth-page">
         <div class="auth-box">
           <div class="auth-title">ENTRAR</div>
@@ -671,16 +674,16 @@ footer {
           </div>
           <div class="form-group">
             <label>Senha</label>
-            <input type="password" v-model="loginForm.password" placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢" @keyup.enter="doLogin" />
+            <input type="password" v-model="loginForm.password" placeholder="••••••••" @keyup.enter="doLogin" />
           </div>
           <button class="btn btn-primary" style="width:100%" @click="doLogin" :disabled="authLoading">
             {{authLoading?'Entrando...':'Entrar'}}
           </button>
-          <div class="auth-switch">NÃ£o tem conta? <a @click="go('register')">Cadastre-se grÃ¡tis</a></div>
+          <div class="auth-switch">Não tem conta? <a @click="go('register')">Cadastre-se grátis</a></div>
         </div>
       </div>
 
-      <!-- CADASTRO -->
+      <!-- REGISTER -->
       <div v-else-if="page==='register'" key="register" class="auth-page">
         <div class="auth-box">
           <div class="auth-title">CADASTRO</div>
@@ -701,22 +704,22 @@ footer {
             <input type="email" v-model="regForm.email" placeholder="seu@email.com" />
           </div>
           <div class="form-group">
-            <label>Senha (mÃ­nimo 6 caracteres)</label>
-            <input type="password" v-model="regForm.password" placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢" />
+            <label>Senha (mínimo 6 caracteres)</label>
+            <input type="password" v-model="regForm.password" placeholder="••••••••" />
           </div>
           <button class="btn btn-primary" style="width:100%" @click="doRegister" :disabled="authLoading">
             {{authLoading?'Cadastrando...':'Criar conta'}}
           </button>
-          <div class="auth-switch">JÃ¡ tem conta? <a @click="go('login')">Entrar</a></div>
+          <div class="auth-switch">Já tem conta? <a @click="go('login')">Entrar</a></div>
         </div>
       </div>
 
-      <!-- MEUS PEDIDOS -->
+      <!-- MY ORDERS -->
       <div v-else-if="page==='orders'" key="orders">
         <div class="container section">
           <div class="section-title" style="margin-bottom:24px">MEUS PEDIDOS</div>
           <div v-if="myOrders.length===0" class="empty-state">
-            <div class="empty-icon">ðŸ“¦</div>
+            <div class="empty-icon">📦</div>
             <div class="empty-title">Nenhum pedido ainda</div>
             <button class="btn btn-primary" style="margin-top:20px" @click="go('shop')">Ir para loja</button>
           </div>
@@ -744,7 +747,7 @@ footer {
         </div>
       </div>
 
-      <!-- ADMINISTRACAO -->
+      <!-- ADMIN -->
       <div v-else-if="page==='admin'" key="admin">
         <div class="admin-layout">
           <aside class="admin-sidebar">
@@ -758,7 +761,7 @@ footer {
           </aside>
           <div class="admin-content">
 
-            <!-- PAINEL -->
+            <!-- DASHBOARD -->
             <div v-if="adminTab==='dashboard'">
               <div class="admin-page-title">DASHBOARD</div>
               <div class="stats-grid" style="margin-bottom:28px">
@@ -768,7 +771,7 @@ footer {
                       <div class="stat-label">Receita Total</div>
                       <div class="stat-value" style="color:var(--gold)">R${{fmtK(stats.revenue)}}</div>
                     </div>
-                    <span class="stat-icon">ðŸ’°</span>
+                    <span class="stat-icon">💰</span>
                   </div>
                 </div>
                 <div class="stat-card">
@@ -777,7 +780,7 @@ footer {
                       <div class="stat-label">Pedidos</div>
                       <div class="stat-value">{{stats.orders}}</div>
                     </div>
-                    <span class="stat-icon">ðŸ“¦</span>
+                    <span class="stat-icon">📦</span>
                   </div>
                 </div>
                 <div class="stat-card">
@@ -786,7 +789,7 @@ footer {
                       <div class="stat-label">Produtos Ativos</div>
                       <div class="stat-value">{{stats.products}}</div>
                     </div>
-                    <span class="stat-icon">ðŸŽ¸</span>
+                    <span class="stat-icon">🎸</span>
                   </div>
                 </div>
                 <div class="stat-card">
@@ -795,7 +798,7 @@ footer {
                       <div class="stat-label">Clientes</div>
                       <div class="stat-value">{{stats.customers}}</div>
                     </div>
-                    <span class="stat-icon">ðŸ‘¥</span>
+                    <span class="stat-icon">👥</span>
                   </div>
                 </div>
                 <div class="stat-card" v-if="stats.low_stock>0">
@@ -804,7 +807,7 @@ footer {
                       <div class="stat-label">Estoque Baixo</div>
                       <div class="stat-value" style="color:var(--red)">{{stats.low_stock}}</div>
                     </div>
-                    <span class="stat-icon">âš ï¸</span>
+                    <span class="stat-icon">⚠️</span>
                   </div>
                 </div>
               </div>
@@ -827,7 +830,7 @@ footer {
                 <div class="card">
                   <div style="padding:20px;border-bottom:1px solid var(--border);font-weight:600">Mais Vendidos</div>
                   <table class="table">
-                    <thead><tr><th>Produto</th><th>Vendidos</th><th>PreÃ§o</th></tr></thead>
+                    <thead><tr><th>Produto</th><th>Vendidos</th><th>Preço</th></tr></thead>
                     <tbody>
                       <tr v-for="p in stats.top_products" :key="p.name">
                         <td>{{p.name}}</td>
@@ -840,7 +843,7 @@ footer {
               </div>
             </div>
 
-            <!-- PRODUTOS (ADMIN) -->
+            <!-- PRODUCTS ADMIN -->
             <div v-if="adminTab==='products'">
               <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px">
                 <div class="admin-page-title">PRODUTOS</div>
@@ -853,7 +856,7 @@ footer {
                 <div class="table-wrap">
                   <table class="table">
                     <thead>
-                      <tr><th>Produto</th><th>Categoria</th><th>PreÃ§o</th><th>Estoque</th><th>Status</th><th>AÃ§Ãµes</th></tr>
+                      <tr><th>Produto</th><th>Categoria</th><th>Preço</th><th>Estoque</th><th>Status</th><th>Ações</th></tr>
                     </thead>
                     <tbody>
                       <tr v-for="p in adminFilteredProducts" :key="p.id">
@@ -862,11 +865,11 @@ footer {
                             <img :src="p.image_url||'https://via.placeholder.com/40x40/1a1a1a/444'" style="width:40px;height:40px;object-fit:cover;border-radius:4px" />
                             <div>
                               <div style="font-weight:600">{{p.name}}</div>
-                              <div style="font-size:12px;color:var(--sub)">{{p.brand}} Â· {{p.sku}}</div>
+                              <div style="font-size:12px;color:var(--sub)">{{p.brand}} · {{p.sku}}</div>
                             </div>
                           </div>
                         </td>
-                        <td>{{p.category_name||'â€”'}}</td>
+                        <td>{{p.category_name||'—'}}</td>
                         <td><span style="font-family:var(--font-mono);color:var(--gold)">R$ {{fmt(p.price)}}</span></td>
                         <td>
                           <span :style="p.stock<=3?'color:var(--red)':''">{{p.stock}}</span>
@@ -877,8 +880,8 @@ footer {
                         </td>
                         <td>
                           <div style="display:flex;gap:6px">
-                            <button class="btn btn-ghost btn-sm" @click="openProductForm(p)">âœï¸ Editar</button>
-                            <button class="btn btn-danger btn-sm" @click="confirmDelete(p)">ðŸ—‘</button>
+                            <button class="btn btn-ghost btn-sm" @click="openProductForm(p)">✏️ Editar</button>
+                            <button class="btn btn-danger btn-sm" @click="confirmDelete(p)">🗑</button>
                           </div>
                         </td>
                       </tr>
@@ -888,14 +891,14 @@ footer {
               </div>
             </div>
 
-            <!-- PEDIDOS (ADMIN) -->
+            <!-- ORDERS ADMIN -->
             <div v-if="adminTab==='orders'">
               <div class="admin-page-title">PEDIDOS</div>
               <div class="card">
                 <div class="table-wrap">
                   <table class="table">
                     <thead>
-                      <tr><th>#</th><th>Cliente</th><th>Data</th><th>Total</th><th>Status</th><th>AÃ§Ãµes</th></tr>
+                      <tr><th>#</th><th>Cliente</th><th>Data</th><th>Total</th><th>Status</th><th>Ações</th></tr>
                     </thead>
                     <tbody>
                       <tr v-for="o in allOrders" :key="o.id">
@@ -930,27 +933,27 @@ footer {
     </transition>
   </div>
 
-  <!-- RODAPE -->
+  <!-- FOOTER -->
   <footer>
     <div style="font-family:var(--font-display);font-size:22px;margin-bottom:8px">MUSIC<span style="color:var(--accent)">STORE</span></div>
-    <div>Â© 2026 MusicStore â€” Projeto AcadÃªmico de E-commerce Â· Todos os direitos reservados</div>
+    <div>© 2026 MusicStore — Projeto Acadêmico de E-commerce · Todos os direitos reservados</div>
   </footer>
 
-  <!-- CARRINHO LATERAL -->
+  <!-- CART SIDEBAR -->
   <div class="cart-overlay" v-if="cartOpen" @click="cartOpen=false"></div>
   <div class="cart-sidebar" :class="{open: cartOpen}">
     <div class="cart-header">
       <div class="cart-title">CARRINHO</div>
-      <button class="modal-close" @click="cartOpen=false">âœ•</button>
+      <button class="modal-close" @click="cartOpen=false">✕</button>
     </div>
     <div class="cart-items">
       <div v-if="!user" class="empty-state" style="padding:40px 20px">
-        <div class="empty-icon">ðŸ”</div>
-        <div class="empty-title" style="font-size:18px">FaÃ§a login para ver o carrinho</div>
+        <div class="empty-icon">🔐</div>
+        <div class="empty-title" style="font-size:18px">Faça login para ver o carrinho</div>
         <button class="btn btn-primary" style="margin-top:16px" @click="cartOpen=false;go('login')">Entrar</button>
       </div>
       <div v-else-if="cart.items&&cart.items.length===0" class="empty-state" style="padding:40px 20px">
-        <div class="empty-icon">ðŸ›’</div>
+        <div class="empty-icon">🛒</div>
         <div class="empty-title" style="font-size:18px">Carrinho vazio</div>
         <button class="btn btn-primary" style="margin-top:16px" @click="cartOpen=false;go('shop')">Ver produtos</button>
       </div>
@@ -961,10 +964,10 @@ footer {
             <div class="cart-item-name">{{item.name}}</div>
             <div class="cart-item-price">R$ {{fmt(item.price * item.quantity)}}</div>
             <div class="qty-control">
-              <button class="qty-btn" @click="updateQty(item, item.quantity-1)">âˆ’</button>
+              <button class="qty-btn" @click="updateQty(item, item.quantity-1)">−</button>
               <span style="font-family:var(--font-mono);font-size:14px">{{item.quantity}}</span>
               <button class="qty-btn" @click="updateQty(item, item.quantity+1)" :disabled="item.quantity>=item.stock">+</button>
-              <button class="qty-btn" @click="removeFromCart(item)" style="margin-left:4px;color:var(--red)">ðŸ—‘</button>
+              <button class="qty-btn" @click="removeFromCart(item)" style="margin-left:4px;color:var(--red)">🗑</button>
             </div>
           </div>
         </div>
@@ -984,12 +987,12 @@ footer {
     </div>
   </div>
 
-  <!-- MODAL DO PRODUTO -->
+  <!-- PRODUCT MODAL -->
   <div class="modal-overlay" v-if="selectedProduct" @click.self="selectedProduct=null">
     <div class="modal" style="max-width:760px">
       <div class="modal-header">
         <div class="modal-title">{{selectedProduct.name}}</div>
-        <button class="modal-close" @click="selectedProduct=null">âœ•</button>
+        <button class="modal-close" @click="selectedProduct=null">✕</button>
       </div>
       <div class="modal-body">
         <div class="product-detail-grid">
@@ -1003,9 +1006,9 @@ footer {
             <div class="product-detail-price">R$ {{fmt(selectedProduct.price)}}</div>
             <div style="font-size:13px;color:var(--sub);margin:8px 0">
               <span v-if="selectedProduct.stock>0" :style="selectedProduct.stock<=3?'color:var(--red)':''">
-                {{selectedProduct.stock<=3?`âš  Apenas ${selectedProduct.stock} em estoque`:`âœ“ ${selectedProduct.stock} em estoque`}}
+                {{selectedProduct.stock<=3?`⚠ Apenas ${selectedProduct.stock} em estoque`:`✓ ${selectedProduct.stock} em estoque`}}
               </span>
-              <span v-else style="color:var(--red)">âŒ Sem estoque</span>
+              <span v-else style="color:var(--red)">❌ Sem estoque</span>
             </div>
             <p style="color:var(--sub);font-size:14px;line-height:1.7;margin:16px 0">{{selectedProduct.description}}</p>
             <div style="font-size:12px;color:var(--muted);margin-bottom:20px" v-if="selectedProduct.sku">SKU: {{selectedProduct.sku}}</div>
@@ -1018,11 +1021,11 @@ footer {
     </div>
   </div>
 
-  <!-- MODAL DE FINALIZACAO -->
+  <!-- CHECKOUT MODAL -->
   <div class="modal-overlay" v-if="showCheckout" @click.self="checkoutStep<3&&(showCheckout=false)">
     <div class="modal" style="max-width:500px">
 
-      <!-- INDICADOR DE ETAPA -->
+      <!-- STEP INDICATOR -->
       <div style="padding:20px 24px 0;display:flex;gap:0;align-items:center" v-if="checkoutStep<4">
         <div v-for="s in [1,2]" :key="s" style="display:flex;align-items:center;flex:1">
           <div :style="`width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;background:${checkoutStep>=s?'var(--accent)':'var(--border)'};color:${checkoutStep>=s?'#fff':'var(--sub)'}`">{{s}}</div>
@@ -1034,35 +1037,35 @@ footer {
 
       <div class="modal-header" style="margin-top:16px">
         <div class="modal-title">
-          {{checkoutStep===1?'ENDEREÃ‡O DE ENTREGA':checkoutStep===2?'PAGAMENTO':checkoutStep===3?'PROCESSANDO...':'PEDIDO CONFIRMADO!'}}
+          {{checkoutStep===1?'ENDEREÇO DE ENTREGA':checkoutStep===2?'PAGAMENTO':checkoutStep===3?'PROCESSANDO...':'PEDIDO CONFIRMADO!'}}
         </div>
-        <button class="modal-close" @click="showCheckout=false" v-if="checkoutStep<3">âœ•</button>
+        <button class="modal-close" @click="showCheckout=false" v-if="checkoutStep<3">✕</button>
       </div>
 
-      <!-- STEP 1: EndereÃ§o -->
+      <!-- STEP 1: Endereço -->
       <div class="modal-body" v-if="checkoutStep===1">
         <div class="alert alert-info" style="margin-bottom:20px">
-          ðŸ›’ <strong>{{cart.count}} item(ns)</strong> Â· Total: <strong style="font-family:var(--font-mono)">R$ {{fmt(cart.total)}}</strong>
+          🛒 <strong>{{cart.count}} item(ns)</strong> · Total: <strong style="font-family:var(--font-mono)">R$ {{fmt(cart.total)}}</strong>
         </div>
         <div class="form-group">
-          <label>EndereÃ§o Completo *</label>
-          <textarea v-model="checkoutAddress" rows="3" placeholder="Rua das Guitarras, 42, Apto 5&#10;Bairro Centro â€” SÃ£o Paulo, SP&#10;CEP: 01310-100" style="resize:vertical"></textarea>
+          <label>Endereço Completo *</label>
+          <textarea v-model="checkoutAddress" rows="3" placeholder="Rua das Guitarras, 42, Apto 5&#10;Bairro Centro — São Paulo, SP&#10;CEP: 01310-100" style="resize:vertical"></textarea>
         </div>
         <div class="form-group">
-          <label>ObservaÃ§Ãµes para entrega (opcional)</label>
+          <label>Observações para entrega (opcional)</label>
           <textarea v-model="checkoutNotes" rows="2" placeholder="Ex: Deixar com o porteiro, tocar campainha 2x..." style="resize:vertical"></textarea>
         </div>
       </div>
 
-      <!-- ETAPA 2: Pagamento -->
+      <!-- STEP 2: Pagamento simulado -->
       <div class="modal-body" v-else-if="checkoutStep===2">
         <div class="alert alert-success" style="margin-bottom:20px">
-          ðŸ”’ Ambiente seguro simulado â€” dados nÃ£o sÃ£o processados de verdade
+          🔒 Ambiente seguro simulado — dados não são processados de verdade
         </div>
         <div class="form-group">
-          <label>MÃ©todo de Pagamento</label>
+          <label>Método de Pagamento</label>
           <div style="display:flex;gap:10px;margin-top:4px">
-            <label v-for="m in [{v:'credit',l:'ðŸ’³ CrÃ©dito'},{v:'debit',l:'ðŸ¦ DÃ©bito'},{v:'pix',l:'âš¡ PIX'}]" :key="m.v"
+            <label v-for="m in [{v:'credit',l:'💳 Crédito'},{v:'debit',l:'🏦 Débito'},{v:'pix',l:'⚡ PIX'}]" :key="m.v"
                    :style="`flex:1;display:flex;align-items:center;justify-content:center;gap:8px;padding:10px;border-radius:4px;cursor:pointer;border:1px solid ${checkoutPayment.method===m.v?'var(--accent)':'var(--border)'};background:${checkoutPayment.method===m.v?'rgba(255,60,0,.1)':'transparent'};font-size:13px;text-transform:none;color:var(--text)`">
               <input type="radio" v-model="checkoutPayment.method" :value="m.v" style="display:none" />
               {{m.l}}
@@ -1070,14 +1073,14 @@ footer {
           </div>
         </div>
 
-        <!-- CartÃ£o -->
+        <!-- Cartão -->
         <div v-if="checkoutPayment.method!=='pix'">
           <div class="form-group">
-            <label>Nome no CartÃ£o</label>
+            <label>Nome no Cartão</label>
             <input type="text" v-model="checkoutPayment.cardName" placeholder="FULANO DA SILVA" style="text-transform:uppercase" />
           </div>
           <div class="form-group">
-            <label>NÃºmero do CartÃ£o</label>
+            <label>Número do Cartão</label>
             <input type="text" v-model="checkoutPayment.cardNumber" placeholder="0000 0000 0000 0000" maxlength="19" />
           </div>
           <div class="form-row">
@@ -1094,53 +1097,53 @@ footer {
 
         <!-- PIX -->
         <div v-else style="text-align:center;padding:24px;background:var(--dark);border-radius:6px;border:1px solid var(--border)">
-          <div style="font-size:60px;margin-bottom:12px">ðŸ“±</div>
+          <div style="font-size:60px;margin-bottom:12px">📱</div>
           <div style="font-family:var(--font-mono);font-size:13px;color:var(--sub);margin-bottom:8px">Chave PIX (simulada)</div>
           <div style="font-family:var(--font-mono);color:var(--gold);font-size:15px">musicstore@pix.com.br</div>
           <div style="font-size:13px;color:var(--sub);margin-top:12px">Valor: <strong style="color:var(--text)">R$ {{fmt(cart.total)}}</strong></div>
-          <div class="badge badge-green" style="margin-top:12px">Pagamento serÃ¡ confirmado automaticamente</div>
+          <div class="badge badge-green" style="margin-top:12px">Pagamento será confirmado automaticamente</div>
         </div>
       </div>
 
-      <!-- ETAPA 3: Processando -->
+      <!-- STEP 3: Processando -->
       <div class="modal-body" v-else-if="checkoutStep===3" style="text-align:center;padding:48px 24px">
-        <div style="font-size:52px;margin-bottom:20px;animation:spin 1s linear infinite;display:inline-block">âš™ï¸</div>
+        <div style="font-size:52px;margin-bottom:20px;animation:spin 1s linear infinite;display:inline-block">⚙️</div>
         <div style="font-size:16px;font-weight:600;margin-bottom:8px">Processando seu pedido...</div>
         <div style="color:var(--sub);font-size:14px">Confirmando {{checkoutPayment.method==='pix'?'PIX':'pagamento'}} e separando os produtos</div>
       </div>
 
-      <!-- ETAPA 4: Sucesso -->
+      <!-- STEP 4: Sucesso -->
       <div class="modal-body" v-else-if="checkoutStep===4" style="text-align:center;padding:40px 24px">
-        <div style="font-size:64px;margin-bottom:16px">ðŸŽ¸</div>
+        <div style="font-size:64px;margin-bottom:16px">🎸</div>
         <div style="font-family:var(--font-display);font-size:28px;letter-spacing:.05em;color:var(--green);margin-bottom:8px">PEDIDO CONFIRMADO!</div>
         <div style="color:var(--sub);margin-bottom:6px">Pedido <strong style="font-family:var(--font-mono);color:var(--text)">#{{lastOrderId}}</strong> realizado com sucesso</div>
-        <div style="color:var(--sub);font-size:13px;margin-bottom:28px">VocÃª receberÃ¡ atualizaÃ§Ãµes sobre o status da entrega</div>
+        <div style="color:var(--sub);font-size:13px;margin-bottom:28px">Você receberá atualizações sobre o status da entrega</div>
         <div style="background:var(--dark);border:1px solid var(--border);border-radius:6px;padding:16px;margin-bottom:24px;text-align:left">
-          <div style="font-size:12px;color:var(--sub);margin-bottom:4px">ENDEREÃ‡O DE ENTREGA</div>
+          <div style="font-size:12px;color:var(--sub);margin-bottom:4px">ENDEREÇO DE ENTREGA</div>
           <div style="font-size:14px">{{checkoutAddress}}</div>
           <div style="font-size:12px;color:var(--sub);margin-top:12px;margin-bottom:4px">TOTAL PAGO</div>
           <div style="font-family:var(--font-mono);color:var(--gold);font-size:18px">R$ {{fmt(cart.total||0)}}</div>
         </div>
-        <button class="btn btn-primary btn-lg" style="width:100%" @click="finishCheckout">Ver meus pedidos â†’</button>
+        <button class="btn btn-primary btn-lg" style="width:100%" @click="finishCheckout">Ver meus pedidos →</button>
       </div>
 
       <div class="modal-footer" v-if="checkoutStep===1||checkoutStep===2">
         <button class="btn btn-ghost" @click="checkoutStep===1?showCheckout=false:checkoutStep=1">
-          {{checkoutStep===1?'Cancelar':'â† Voltar'}}
+          {{checkoutStep===1?'Cancelar':'← Voltar'}}
         </button>
         <button class="btn btn-primary" @click="checkoutNext">
-          {{checkoutStep===1?'Continuar â†’':'Confirmar Pagamento'}}
+          {{checkoutStep===1?'Continuar →':'Confirmar Pagamento'}}
         </button>
       </div>
     </div>
   </div>
 
-  <!-- MODAL DE DETALHE DO PEDIDO -->
+  <!-- ORDER DETAIL MODAL -->
   <div class="modal-overlay" v-if="selectedOrder" @click.self="selectedOrder=null">
     <div class="modal" style="max-width:600px">
       <div class="modal-header">
         <div class="modal-title">PEDIDO #{{selectedOrder.id}}</div>
-        <button class="modal-close" @click="selectedOrder=null">âœ•</button>
+        <button class="modal-close" @click="selectedOrder=null">✕</button>
       </div>
       <div class="modal-body">
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px">
@@ -1149,7 +1152,7 @@ footer {
           <div><div style="font-size:12px;color:var(--sub)">Status</div><div :class="'status-'+selectedOrder.status">{{statusLabel(selectedOrder.status)}}</div></div>
           <div><div style="font-size:12px;color:var(--sub)">Total</div><div style="font-family:var(--font-mono);color:var(--gold)">R$ {{fmt(selectedOrder.total)}}</div></div>
         </div>
-        <div style="font-size:12px;color:var(--sub);margin-bottom:4px">EndereÃ§o de Entrega</div>
+        <div style="font-size:12px;color:var(--sub);margin-bottom:4px">Endereço de Entrega</div>
         <div style="background:var(--dark);padding:10px 14px;border-radius:4px;font-size:14px;margin-bottom:20px">{{selectedOrder.shipping_address}}</div>
         <div style="font-weight:600;margin-bottom:12px">Itens do Pedido</div>
         <div v-for="item in selectedOrder.items" :key="item.id"
@@ -1165,12 +1168,12 @@ footer {
     </div>
   </div>
 
-  <!-- MODAL DE PRODUTO (ADMIN) -->
+  <!-- PRODUCT FORM MODAL (ADMIN) -->
   <div class="modal-overlay" v-if="showProductForm" @click.self="showProductForm=false">
     <div class="modal" style="max-width:620px">
       <div class="modal-header">
         <div class="modal-title">{{productForm.id?'EDITAR':'NOVO'}} PRODUTO</div>
-        <button class="modal-close" @click="showProductForm=false">âœ•</button>
+        <button class="modal-close" @click="showProductForm=false">✕</button>
       </div>
       <div class="modal-body">
         <div class="alert alert-error" v-if="productFormError" style="margin-bottom:16px">{{productFormError}}</div>
@@ -1185,12 +1188,12 @@ footer {
           </div>
         </div>
         <div class="form-group">
-          <label>DescriÃ§Ã£o</label>
+          <label>Descrição</label>
           <textarea v-model="productForm.description" rows="3" style="resize:vertical"></textarea>
         </div>
         <div class="form-row">
           <div class="form-group">
-            <label>PreÃ§o (R$) *</label>
+            <label>Preço (R$) *</label>
             <input type="number" v-model="productForm.price" min="0" step="0.01" />
           </div>
           <div class="form-group">
@@ -1235,12 +1238,12 @@ footer {
     </div>
   </div>
 
-  <!-- CONFIRMACAO DE EXCLUSAO -->
+  <!-- DELETE CONFIRM -->
   <div class="modal-overlay" v-if="deleteTarget" @click.self="deleteTarget=null">
     <div class="modal" style="max-width:400px">
-      <div class="modal-header"><div class="modal-title">CONFIRMAR EXCLUSÃƒO</div><button class="modal-close" @click="deleteTarget=null">âœ•</button></div>
+      <div class="modal-header"><div class="modal-title">CONFIRMAR EXCLUSÃO</div><button class="modal-close" @click="deleteTarget=null">✕</button></div>
       <div class="modal-body">
-        <p>Tem certeza que deseja excluir <strong>{{deleteTarget.name}}</strong>? Esta aÃ§Ã£o nÃ£o pode ser desfeita.</p>
+        <p>Tem certeza que deseja excluir <strong>{{deleteTarget.name}}</strong>? Esta ação não pode ser desfeita.</p>
       </div>
       <div class="modal-footer">
         <button class="btn btn-ghost" @click="deleteTarget=null">Cancelar</button>
@@ -1249,7 +1252,7 @@ footer {
     </div>
   </div>
 
-  <!-- AREA DE NOTIFICACOES -->
+  <!-- TOAST CONTAINER -->
   <div class="toast-container">
     <div class="toast" :class="t.type" v-for="t in toasts" :key="t.id">{{t.msg}}</div>
   </div>
@@ -1259,12 +1262,12 @@ footer {
 const { createApp, ref, reactive, computed, onMounted, watch } = Vue;
 
 // =========================================
-// URL da API
-// Ordem de escolha:
-//   1. valor da meta tag api-base
-//   2. valor global window.__MUSICSTORE_API__
-//   3. ambiente local com /frontend/ na URL
-//   4. Fallback de produÃ§Ã£o (Railway)
+// API BASE URL
+// Prioridade:
+//   1. meta tag <meta name="api-base">
+//   2. window.__MUSICSTORE_API__
+//   3. Ambiente local com /frontend/ no path
+//   4. Fallback de produção (Railway)
 // =========================================
 const API = (() => {
   const normalizeApiBase = (url) => {
@@ -1273,14 +1276,14 @@ const API = (() => {
     return cleaned.endsWith('/api') ? cleaned : `${cleaned}/api`;
   };
 
-  // 1. Usa a meta tag quando existir
+  // 1. Meta tag injetada pelo servidor/build
   const meta = document.querySelector('meta[name="api-base"]');
   if (meta && meta.content) {
     const base = normalizeApiBase(meta.content);
     if (base) return base;
   }
 
-  // 2. Quando servido pelo Railway em outro domÃ­nio via env injetada no HTML
+  // 2. Quando servido pelo Railway em outro domínio via env injetada no HTML
   if (window.__MUSICSTORE_API__) {
     const base = normalizeApiBase(window.__MUSICSTORE_API__);
     if (base) return base;
@@ -1288,63 +1291,63 @@ const API = (() => {
 
   const { origin, pathname, protocol } = window.location;
 
-  // 3. Em ambiente local, monta a URL automaticamente
+  // 3. XAMPP / local com /frontend/ no path
   if (protocol.startsWith('http') && pathname.includes('/frontend/')) {
     const base = pathname.split('/frontend/')[0];
     return `${origin}${base}/backend/api`;
   }
 
-  // 4. Fallback de produÃ§Ã£o
+  // 4. Fallback de produção
   return 'https://musicstore-production-5765.up.railway.app/api';
 })();
 
 const app = createApp({
   setup() {
-    // ===== ESTADO =====
+    // ===== STATE =====
     const page      = ref('home');
     const user      = ref(null);
     const token     = ref(localStorage.getItem('ms_token') || '');
 
-    // Produtos
+    // Products
     const products   = ref([]);
     const categories = ref([]);
     const shopSearch = ref('');
     const shopCategory = ref('');
 
-    // Carrinho
+    // Cart
     const cart     = reactive({ items: [], total: 0, count: 0 });
     const cartOpen = ref(false);
 
-    // Acesso
+    // Auth
     const loginForm  = reactive({ email: '', password: '' });
     const regForm    = reactive({ name: '', email: '', password: '', phone: '' });
     const authError  = ref('');
     const authLoading = ref(false);
 
-    // Pedidos
+    // Orders
     const myOrders   = ref([]);
     const allOrders  = ref([]);
     const selectedOrder = ref(null);
 
-    // Finalizacao
+    // Checkout
     const showCheckout    = ref(false);
-    const checkoutStep    = ref(1); // 1=endereÃ§o, 2=pagamento, 3=processando, 4=confirmado
+    const checkoutStep    = ref(1); // 1=endereço, 2=pagamento, 3=processando, 4=confirmado
     const checkoutAddress = ref('');
     const checkoutNotes   = ref('');
     const checkoutPayment = reactive({ method: 'credit', cardName: '', cardNumber: '', cardExpiry: '', cardCvv: '' });
     const orderLoading    = ref(false);
     const lastOrderId     = ref(null);
 
-    // Detalhe do produto
+    // Product detail
     const selectedProduct = ref(null);
 
-    // Administracao
+    // Admin
     const adminTab    = ref('dashboard');
     const stats       = reactive({ revenue: 0, orders: 0, products: 0, customers: 0, low_stock: 0, recent_orders: [], top_products: [], orders_by_status: [] });
     const adminMenu   = [
-      { key: 'dashboard', icon: 'ðŸ“Š', label: 'Dashboard' },
-      { key: 'products',  icon: 'ðŸŽ¸', label: 'Produtos' },
-      { key: 'orders',    icon: 'ðŸ“¦', label: 'Pedidos' },
+      { key: 'dashboard', icon: '📊', label: 'Dashboard' },
+      { key: 'products',  icon: '🎸', label: 'Produtos' },
+      { key: 'orders',    icon: '📦', label: 'Pedidos' },
     ];
     const adminProductSearch = ref('');
     const showProductForm = ref(false);
@@ -1353,10 +1356,10 @@ const app = createApp({
     const productForm = reactive({ id: null, name: '', description: '', price: '', stock: 0, category_id: '', image_url: '', brand: '', sku: '', featured: false, active: true });
     const deleteTarget = ref(null);
 
-    // Notificacoes
+    // Toasts
     const toasts = ref([]);
 
-    // ===== CAMPOS CALCULADOS =====
+    // ===== COMPUTED =====
     const featuredProducts = computed(() => products.value.filter(p => p.featured).slice(0, 6));
 
     const filteredProducts = computed(() => {
@@ -1377,7 +1380,7 @@ const app = createApp({
       return all.filter(p => p.name.toLowerCase().includes(s) || (p.brand||'').toLowerCase().includes(s) || (p.sku||'').toLowerCase().includes(s));
     });
 
-    // ===== FUNCOES AUXILIARES =====
+    // ===== HELPERS =====
     const fmt  = v => Number(v).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
     const fmtK = v => v >= 1000 ? (v/1000).toFixed(1) + 'k' : fmt(v);
     const fmtDate = d => new Date(d).toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric' });
@@ -1411,7 +1414,7 @@ const app = createApp({
           try {
             data = JSON.parse(raw);
           } catch {
-            throw new Error('Resposta JSON invÃ¡lida do servidor.');
+            throw new Error('Resposta JSON inválida do servidor.');
           }
         } else {
           try {
@@ -1429,7 +1432,7 @@ const app = createApp({
       return data;
     };
 
-    // ===== NAVEGACAO =====
+    // ===== NAV =====
     const go = async (p) => {
       page.value = p;
       authError.value = '';
@@ -1441,7 +1444,7 @@ const app = createApp({
       }
     };
 
-    // ===== PRODUTOS =====
+    // ===== PRODUCTS =====
     const loadProducts = async (adminAll = false) => {
       try {
         const ep = adminAll ? 'products.php?all=1' : 'products.php';
@@ -1455,7 +1458,7 @@ const app = createApp({
 
     const openProduct = (p) => { selectedProduct.value = p; };
 
-    // ===== ACESSO =====
+    // ===== AUTH =====
     const doLogin = async () => {
       authLoading.value = true; authError.value = '';
       try {
@@ -1490,7 +1493,7 @@ const app = createApp({
       user.value = null; token.value = '';
       localStorage.removeItem('ms_token');
       cart.items = []; cart.total = 0; cart.count = 0;
-      toast('SessÃ£o encerrada.', 'info');
+      toast('Sessão encerrada.', 'info');
       go('home');
     };
 
@@ -1502,7 +1505,7 @@ const app = createApp({
       } catch(e) { token.value = ''; localStorage.removeItem('ms_token'); }
     };
 
-    // ===== CARRINHO =====
+    // ===== CART =====
     const loadCart = async () => {
       if (!user.value) return;
       try {
@@ -1514,7 +1517,7 @@ const app = createApp({
     };
 
     const addToCart = async (product) => {
-      if (!user.value) { go('login'); toast('FaÃ§a login para adicionar ao carrinho', 'info'); return; }
+      if (!user.value) { go('login'); toast('Faça login para adicionar ao carrinho', 'info'); return; }
       try {
         await api('cart.php?action=add', 'POST', { product_id: product.id, quantity: 1 });
         await loadCart();
@@ -1546,7 +1549,7 @@ const app = createApp({
       } catch(e) {}
     };
 
-    // ===== PEDIDOS =====
+    // ===== ORDERS =====
     const loadMyOrders = async () => {
       try { myOrders.value = await api('orders.php'); } catch(e) {}
     };
@@ -1574,12 +1577,12 @@ const app = createApp({
 
     const checkoutNext = () => {
       if (checkoutStep.value === 1) {
-        if (!checkoutAddress.value.trim()) { toast('Informe o endereÃ§o de entrega.', 'error'); return; }
+        if (!checkoutAddress.value.trim()) { toast('Informe o endereço de entrega.', 'error'); return; }
         checkoutStep.value = 2;
       } else if (checkoutStep.value === 2) {
         if (checkoutPayment.method === 'credit') {
           if (!checkoutPayment.cardName || !checkoutPayment.cardNumber || !checkoutPayment.cardExpiry || !checkoutPayment.cardCvv) {
-            toast('Preencha todos os dados do cartÃ£o.', 'error'); return;
+            toast('Preencha todos os dados do cartão.', 'error'); return;
           }
         }
         placeOrder();
@@ -1589,7 +1592,7 @@ const app = createApp({
     const placeOrder = async () => {
       checkoutStep.value = 3; // processando
       orderLoading.value = true;
-      // Espera curta para mostrar o processamento do pagamento
+      // Simula delay de pagamento (1.8s)
       await new Promise(r => setTimeout(r, 1800));
       try {
         const data = await api('orders.php', 'POST', { shipping_address: checkoutAddress.value, notes: checkoutNotes.value });
@@ -1605,7 +1608,7 @@ const app = createApp({
 
     const finishCheckout = async () => {
       showCheckout.value = false;
-      toast('Pedido #' + lastOrderId.value + ' confirmado! ðŸŽ¸', 'success');
+      toast('Pedido #' + lastOrderId.value + ' confirmado! 🎸', 'success');
       go('orders');
     };
 
@@ -1617,7 +1620,7 @@ const app = createApp({
       } catch(e) { toast(e.message, 'error'); }
     };
 
-    // ===== ADMINISTRACAO =====
+    // ===== ADMIN =====
     const loadStats = async () => {
       try {
         const data = await api('admin_stats.php');
@@ -1637,7 +1640,7 @@ const app = createApp({
 
     const saveProduct = async () => {
       productFormError.value = '';
-      if (!productForm.name || !productForm.price) { productFormError.value = 'Nome e preÃ§o sÃ£o obrigatÃ³rios.'; return; }
+      if (!productForm.name || !productForm.price) { productFormError.value = 'Nome e preço são obrigatórios.'; return; }
       productSaving.value = true;
       try {
         if (productForm.id) {
@@ -1658,15 +1661,15 @@ const app = createApp({
     const doDelete = async () => {
       try {
         await api(`products.php?id=${deleteTarget.value.id}`, 'DELETE');
-        toast('Produto excluÃ­do.', 'info');
+        toast('Produto excluído.', 'info');
         deleteTarget.value = null;
         await loadProducts(true);
       } catch(e) { toast(e.message, 'error'); }
     };
 
-    // ===== INICIALIZACAO =====
+    // ===== INIT =====
     onMounted(async () => {
-      // Restaurar sessÃ£o PRIMEIRO para ter o token antes de qualquer aÃ§Ã£o do usuÃ¡rio
+      // Restaurar sessão PRIMEIRO para ter o token antes de qualquer ação do usuário
       await restoreSession();
       await Promise.all([loadCategories(), loadProducts()]);
     });
@@ -1684,7 +1687,7 @@ const app = createApp({
       showProductForm, productForm, productFormError, productSaving,
       deleteTarget,
       toasts,
-      // funcoes expostas no template
+      // methods
       go, fmt, fmtK, fmtDate, statusLabel,
       doLogin, doRegister, logout,
       addToCart, updateQty, removeFromCart, clearCart,
@@ -1697,4 +1700,3 @@ app.mount('#app');
 </script>
 </body>
 </html>
-

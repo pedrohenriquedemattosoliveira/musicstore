@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 // ============================================
 // MUSICSTORE - API de Produtos
 // ============================================
@@ -15,7 +15,7 @@ match (true) {
     $method === 'POST'            => createProduct(),
     $method === 'PUT'    && $id   => updateProduct($id),
     $method === 'DELETE' && $id   => deleteProduct($id),
-    default => jsonResponse(['error' => 'Rota nÃ£o encontrada'], 404)
+    default => jsonResponse(['error' => 'Rota não encontrada'], 404)
 };
 
 function listProducts(): void {
@@ -56,7 +56,7 @@ function listProducts(): void {
         $p['category_id']  = $p['category_id'] ? (int)$p['category_id'] : null;
     }
 
-    // Para admin, pode listar todos os produtos, inclusive inativos.
+    // Retorna todos se admin (inclui inativos se pedido)
     $user = getAuthUser();
     if ($user && $user['role'] === 'admin' && isset($_GET['all'])) {
         $stmt2 = $db->query("SELECT p.*, c.name as category_name, c.slug as category_slug
@@ -83,7 +83,7 @@ function getProduct(int $id): void {
                           WHERE p.id = ?");
     $stmt->execute([$id]);
     $p = $stmt->fetch();
-    if (!$p) jsonResponse(['error' => 'Produto nÃ£o encontrado.'], 404);
+    if (!$p) jsonResponse(['error' => 'Produto não encontrado.'], 404);
     $p['id']    = (int)$p['id'];
     $p['price'] = (float)$p['price'];
     $p['stock'] = (int)$p['stock'];
@@ -106,7 +106,7 @@ function createProduct(): void {
     $featured = (bool)($body['featured'] ?? false);
 
     if (!$name || $price <= 0) {
-        jsonResponse(['error' => 'Nome e preÃ§o sÃ£o obrigatÃ³rios.'], 400);
+        jsonResponse(['error' => 'Nome e preço são obrigatórios.'], 400);
     }
 
     $db   = getDB();
@@ -124,7 +124,7 @@ function updateProduct(int $id): void {
 
     $stmt = $db->prepare('SELECT id FROM products WHERE id = ?');
     $stmt->execute([$id]);
-    if (!$stmt->fetch()) jsonResponse(['error' => 'Produto nÃ£o encontrado.'], 404);
+    if (!$stmt->fetch()) jsonResponse(['error' => 'Produto não encontrado.'], 404);
 
     $fields = [];
     $params = [];
@@ -147,7 +147,6 @@ function deleteProduct(int $id): void {
     $db   = getDB();
     $stmt = $db->prepare('DELETE FROM products WHERE id = ?');
     $stmt->execute([$id]);
-    if ($stmt->rowCount() === 0) jsonResponse(['error' => 'Produto nÃ£o encontrado.'], 404);
-    jsonResponse(['message' => 'Produto excluÃ­do com sucesso.']);
+    if ($stmt->rowCount() === 0) jsonResponse(['error' => 'Produto não encontrado.'], 404);
+    jsonResponse(['message' => 'Produto excluído com sucesso.']);
 }
-
